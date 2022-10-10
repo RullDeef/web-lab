@@ -35,5 +35,5 @@ export class StudyTextService {
         this.logger.log('delete id=' + id);
 
         return await this.repository.delete({ id });
-    } 
+    }
 }
