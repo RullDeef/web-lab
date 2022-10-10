@@ -12,12 +12,12 @@
 
 - use-case:
 
-<center><img src='use-case.png'></center>
+<center><img src='docs/use-case.png'></center>
 
 - черновик экранов:
 
-<center><img src='screens.png'></center>
+<center><img src='docs/screens.png'></center>
 
 - ER-диаграмма:
 
-<center><img src='er-model.png'></center>
+<center><img src='docs/er-model.png'></center>
