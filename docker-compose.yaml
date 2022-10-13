@@ -1,10 +1,42 @@
-version: '3'
+version: '3.9'
 
 services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./nginx/logs:/etc/nginx/logs
+    ports:
+      - 80:80
+    networks: [ r1 ]
+    depends_on: [ server, pgadmin ]
+  server:
+    image: node:18-alpine
+    user: node
+    working_dir: /home/node/app
+    volumes:
+      - ./server:/home/node/app
+    command: npm run start:dev
+    networks: [ r1, r2 ]
+    depends_on: [ database ]
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: support@eagool.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_LISTEN_PORT: 3001
+    networks: [ r1, r2 ]
+    depends_on: [ database ]
   database:
     image: postgres:14-alpine
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: eagool
-    network_mode: host
+    networks: [ r2 ]
+
+networks:
+  r1:
+    driver: bridge
+  r2:
+    driver: bridge
