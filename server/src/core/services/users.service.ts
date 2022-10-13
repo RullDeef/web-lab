@@ -36,4 +36,10 @@ export class UsersService {
 
         return await this.repository.delete({ id });
     }
+
+    async findByLogin(login: string) {
+        this.logger.log('findByLogin login=' + login);
+
+        return await this.repository.findOneBy({ login });
+    }
 }

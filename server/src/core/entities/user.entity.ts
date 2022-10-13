@@ -23,4 +23,15 @@ export class User {
         enumName: 'user_roles'
     })
     role: UserRole;
+
+    @Column({ unique: true })
+    login: string;
+
+    @Column()
+    password: string;
+
+    stripCredentials() {
+        const { login, password, ...result } = this;
+        return result;
+    }
 }

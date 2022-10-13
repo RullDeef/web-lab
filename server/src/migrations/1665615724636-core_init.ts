@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class coreInit1665360284525 implements MigrationInterface {
-    name = 'coreInit1665360284525'
+export class coreInit1665615724636 implements MigrationInterface {
+    name = 'coreInit1665615724636'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."user_roles" AS ENUM('admin', 'tutor', 'student')`);
-        await queryRunner.query(`CREATE TABLE "users" ("id" SERIAL NOT NULL, "first_name" character varying NOT NULL, "last_name" character varying NOT NULL, "role" "public"."user_roles" NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "users" ("id" SERIAL NOT NULL, "first_name" character varying NOT NULL, "last_name" character varying NOT NULL, "role" "public"."user_roles" NOT NULL, "login" character varying NOT NULL, "password" character varying NOT NULL, CONSTRAINT "UQ_2d443082eccd5198f95f2a36e2c" UNIQUE ("login"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "study_groups" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "tutor_id" integer, CONSTRAINT "REL_e3ac0a4eb7d61c4e82115fa86e" UNIQUE ("tutor_id"), CONSTRAINT "PK_d3c236286b727d74553c7a88dc3" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "texts" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "content" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_ce044efbc0a1872f20feca7e19f" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "study_groups_users" ("group_id" integer NOT NULL, "student_id" integer NOT NULL, CONSTRAINT "PK_8fc745d5bb7f6f86b488a1ab41f" PRIMARY KEY ("group_id", "student_id"))`);
