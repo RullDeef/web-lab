@@ -4,14 +4,26 @@ services:
   nginx:
     image: nginx:alpine
     volumes:
-    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    - ./nginx/logs:/etc/nginx/logs
+      - ./nginx/logs:/etc/nginx/logs
+      - ./nginx/static:/home/static:ro
+      - ./nginx/envload.sh:/etc/envload.sh:ro
+      - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
     networks: [ r1 ]
     depends_on: [ server, pgadmin ]
+    command: ash -c "/etc/envload.sh && nginx -g 'daemon off;'"
   server:
     image: node:18-alpine
+    environment:
+      PORT: 3000
+      DB_TYPE: postgres
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_DBNAME: eagool
     user: node
     working_dir: /home/node/app
     volumes:
@@ -24,7 +36,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: support@eagool.com
       PGADMIN_DEFAULT_PASSWORD: root
-      PGADMIN_LISTEN_PORT: 3001
+      PGADMIN_LISTEN_PORT: 80
     networks: [ r1, r2 ]
     depends_on: [ database ]
   database:
