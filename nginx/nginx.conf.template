@@ -24,6 +24,10 @@ http {
         gzip            on;
         gzip_proxied    expired no-cache no-store private auth;
 
+        location /test {
+            rewrite ^/test((/.*)?)$ $1 redirect;
+        }
+
         location / {
             access_log off;
             error_log logs/static/error.log;
