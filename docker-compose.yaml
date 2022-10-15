@@ -6,6 +6,7 @@ services:
     volumes:
       - ./nginx/logs:/etc/nginx/logs
       - ./nginx/static:/home/static:ro
+      - ./nginx/standalone:/home/standalone:ro
       - ./nginx/envload.sh:/etc/envload.sh:ro
       - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf

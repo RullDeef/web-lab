@@ -1,0 +1,1 @@
+print('Eagool standalone application')

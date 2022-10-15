@@ -9,8 +9,8 @@ http {
 
     upstream backend {
         server ${API_SERVER_IP}:3000 weight=2;
-        server ${API_SERVER_IP}:3001 weight=1;
-        server ${API_SERVER_IP}:3002 weight=1;
+        # server ${API_SERVER_IP}:3001 weight=1;
+        # server ${API_SERVER_IP}:3002 weight=1;
     }
 
     map $request_method $upstream_location {
@@ -23,6 +23,12 @@ http {
 
         gzip            on;
         gzip_proxied    expired no-cache no-store private auth;
+
+        location /standalone {
+            root /home;
+            rewrite ^/standalone(/.*)?$ /standalone/eagool_app.py break;
+            add_header Content-disposition "attachment; filename=eagool_app.py";
+        }
 
         location /test {
             rewrite ^/test((/.*)?)$ $1 redirect;
