@@ -23,7 +23,7 @@ import { UsersService } from './services/users.service';
         ]),
         PassportModule,
         JwtModule.register({
-            secret: '1wdvgr3waxdr5',
+            secret: process.env.JWT_SECRET_KEY,
             signOptions: { expiresIn: '1d' }
         })
     ],
@@ -40,4 +40,4 @@ import { UsersService } from './services/users.service';
         AuthController
     ]
 })
-export class CoreModule {}
+export class CoreModule { }
