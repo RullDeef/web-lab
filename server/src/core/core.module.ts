@@ -17,27 +17,27 @@ import { StudyTextService as StudyTextsService } from './services/study-texts.se
 import { UsersService } from './services/users.service';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            User, StudyText, StudyGroup
-        ]),
-        PassportModule,
-        JwtModule.register({
-            secret: process.env.JWT_SECRET_KEY,
-            signOptions: { expiresIn: '1d' }
-        })
-    ],
-    providers: [
-        UsersService,
-        StudyTextsService,
-        StudyGroupsService,
-        AuthService, LocalStrategy, JwtStrategy
-    ],
-    controllers: [
-        UsersController,
-        StudyTextsController,
-        StudyGroupsController,
-        AuthController
-    ]
+  imports: [
+    TypeOrmModule.forFeature([User, StudyText, StudyGroup]),
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: '1d' },
+    }),
+  ],
+  providers: [
+    UsersService,
+    StudyTextsService,
+    StudyGroupsService,
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+  ],
+  controllers: [
+    UsersController,
+    StudyTextsController,
+    StudyGroupsController,
+    AuthController,
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}

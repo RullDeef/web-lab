@@ -1,40 +1,89 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post } from "@nestjs/common";
-import { CreateStudyGroupDto } from "../dto/create-study-group.dto";
-import { StudyGroupsService } from "../services/study-groups.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { CreateStudyGroupDto } from '../dto/create-study-group.dto';
+import { RespondStudyGroupDto } from '../dto/respond-study-group.dto';
+import { JwtGuard } from '../services/auth/jwt.guard';
+import { StudyGroupsService } from '../services/study-groups.service';
 
+@ApiTags('Study Groups')
 @Controller('study-groups')
 export class StudyGroupsController {
-    private readonly logger = new Logger(StudyGroupsController.name);
+  private readonly logger = new Logger(StudyGroupsController.name);
 
-    constructor(
-        private readonly service: StudyGroupsService
-    ) { }
+  constructor(private readonly service: StudyGroupsService) {}
 
-    @Post()
-    async create(@Body() body: CreateStudyGroupDto) {
-        this.logger.log('create', body);
+  @Post()
+  @ApiCreatedResponse({
+    description: 'Учебная группа успешно создана',
+    type: RespondStudyGroupDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Пользователь не авторизован',
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  async create(@Body() body: CreateStudyGroupDto) {
+    this.logger.log('create', body);
 
-        return await this.service.create(body);
-    }
+    const group = await this.service.create(body);
+    return new RespondStudyGroupDto(group);
+  }
 
-    @Get()
-    async getAll() {
-        this.logger.log('getAll');
+  @Get()
+  @ApiOkResponse({
+    description: 'Успешный ответ',
+    type: RespondStudyGroupDto,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Пользователь не авторизован',
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  async getAll() {
+    this.logger.log('getAll');
 
-        return await this.service.findAll();
-    }
+    return (await this.service.findAll()).map(s => new RespondStudyGroupDto(s));
+  }
 
-    @Get(':id')
-    async getById(@Param('id') id: number) {
-        this.logger.log('getById id=' + id);
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'Успешный ответ',
+    type: RespondStudyGroupDto,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Пользователь не авторизован',
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  async getById(@Param('id') id: number) {
+    this.logger.log('getById id=' + id);
 
-        return await this.service.findById(id);
-    }
+    const group = await this.service.findById(id);
+    return new RespondStudyGroupDto(group);
+  }
 
-    @Delete(':id')
-    async delete(@Param('id') id: number) {
-        this.logger.log('delete id=' + id);
+  @Delete(':id')
+  @ApiNoContentResponse({
+    description: 'Группа успешно удалена',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Пользователь не авторизован',
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  async delete(@Param('id') id: number) {
+    this.logger.log('delete id=' + id);
 
-        return await this.service.delete(id);
-    }
+    await this.service.delete(id);
+  }
 }

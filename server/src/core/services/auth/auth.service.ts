@@ -1,36 +1,36 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { UsersService } from "../users.service";
+import { Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users.service';
 
 @Injectable()
 export class AuthService {
-    private readonly logger = new Logger(AuthService.name);
+  private readonly logger = new Logger(AuthService.name);
 
-    constructor(
-        private readonly usersService: UsersService,
-        private readonly jwtService: JwtService
-    ) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-    async validateUser(login: string, password: string) {
-        this.logger.log('validateUser login=' + login + ' password=' + password);
+  async validateUser(login: string, password: string) {
+    this.logger.log('validateUser login=' + login + ' password=' + password);
 
-        const user = await this.usersService.findByLogin(login);
+    const user = await this.usersService.findByLogin(login);
 
-        if (user && user.password == password) {
-            const { login, password, ...result } = user;
-            return result;
-        }
-
-        return null;
+    if (user && user.password == password) {
+      const { login, password, ...result } = user;
+      return result;
     }
 
-    async login(user: any) {
-        this.logger.log('login', user);
+    return null;
+  }
 
-        const payload = { username: user.login, sub: user.id };
-        const access_token = this.jwtService.sign(payload);
+  async login(user: any) {
+    this.logger.log('login', user);
 
-        this.logger.log('token generated: ' + access_token);
-        return { access_token };
-    }
+    const payload = { username: user.login, sub: user.id };
+    const access_token = this.jwtService.sign(payload);
+
+    this.logger.log('token generated: ' + access_token);
+    return { access_token };
+  }
 }

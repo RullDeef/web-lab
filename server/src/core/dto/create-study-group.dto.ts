@@ -1,7 +1,19 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateStudyGroupDto {
-    title: string;
+  @ApiProperty({
+    description: 'Название учебной группы',
+  })
+  title: string;
 
-    tutor_id: number;
+  @ApiProperty({
+    description: 'Идентификатор преподавателя',
+  })
+  tutor_id: number;
 
-    students_ids: number[];
+  @ApiProperty({
+    description: 'Массив идентификаторов студентов',
+    type: ['number'],
+  })
+  students_ids: number[];
 }
