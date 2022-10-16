@@ -7,24 +7,22 @@ services:
       - ./nginx/logs:/etc/nginx/logs
       - ./nginx/static:/home/static:ro
       - ./nginx/standalone:/home/standalone:ro
-      - ./nginx/envload.sh:/etc/envload.sh:ro
-      - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
     networks: [ r1 ]
-    depends_on: [ server, pgadmin ]
-    command: ash -c "/etc/envload.sh && nginx -g 'daemon off;'"
-  server:
+    depends_on: [ server1, server2, server3, mirror, pgadmin ]
+  server1: &main-backend
     image: node:18-alpine
-    environment:
-      PORT: 3000
+    environment: &server-env
+      PORT: 80
       DB_TYPE: postgres
       DB_HOST: database
       DB_PORT: 5432
       DB_USERNAME: root
       DB_PASSWORD: root
       DB_DBNAME: eagool
+      JWT_SECRET_KEY: 77086bf1-eb90-4475-b7d8-796e7eeaf10e
     user: node
     working_dir: /home/node/app
     volumes:
@@ -32,6 +30,16 @@ services:
     command: npm run start:dev
     networks: [ r1, r2 ]
     depends_on: [ database ]
+  server2: &second-backend
+    <<: *main-backend
+    environment:
+      <<: *server-env
+      DB_USERNAME: root_ro
+      DB_PASSWORD: root_ro
+  server3:
+    <<: *second-backend
+  mirror:
+    <<: *main-backend
   pgadmin:
     image: dpage/pgadmin4
     environment:
