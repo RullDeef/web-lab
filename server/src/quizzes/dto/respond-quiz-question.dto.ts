@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { QuizQuestion } from "../entities/quiz-question.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { QuizQuestion } from '../entities/quiz-question.entity';
 
 export class RespondQuizQuestionDto {
   @ApiProperty({
@@ -22,6 +22,6 @@ export class RespondQuizQuestionDto {
   constructor(question: QuizQuestion) {
     this.id = question.id;
     this.question = question.question;
-    this.options = question.options.map(o => o.content);
+    this.options = question.options.map((o) => o.content);
   }
 }

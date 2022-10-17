@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { StudyGroup } from "../entities/study-group.entity";
-import { RespondUserDto } from "./respond-user.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { StudyGroup } from '../entities/study-group.entity';
+import { RespondUserDto } from './respond-user.dto';
 
 export class RespondStudyGroupDto {
   @ApiProperty({
@@ -31,6 +31,6 @@ export class RespondStudyGroupDto {
     this.id = group.id;
     this.title = group.title;
     this.tutor = new RespondUserDto(group.tutor);
-    this.students = group.students.map(s => new RespondUserDto(s));
+    this.students = group.students.map((s) => new RespondUserDto(s));
   }
 }

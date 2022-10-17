@@ -65,7 +65,7 @@ export class UsersController {
     this.logger.log('by user', req.user);
 
     const users = await this.service.findAll();
-    return users.map(u => new RespondUserDto(u));
+    return users.map((u) => new RespondUserDto(u));
   }
 
   @Get(':id')
@@ -98,7 +98,7 @@ export class UsersController {
     description: 'Идентификатор пользователя',
   })
   @ApiNoContentResponse({
-    description: 'Пользователь успешно удален'
+    description: 'Пользователь успешно удален',
   })
   @ApiNotFoundResponse({
     description: 'Пользователь не найден',

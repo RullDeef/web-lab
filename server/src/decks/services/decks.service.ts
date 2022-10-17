@@ -1,8 +1,8 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { CreateDeckDto } from "../dto/create-deck.dto";
-import { Deck } from "../entities/deck.entity";
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateDeckDto } from '../dto/create-deck.dto';
+import { Deck } from '../entities/deck.entity';
 
 @Injectable()
 export class DecksService {

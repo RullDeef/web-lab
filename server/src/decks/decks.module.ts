@@ -7,12 +7,7 @@ import { Deck } from './entities/deck.entity';
 import { DecksService } from './services/decks.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      Card, Deck,
-    ]),
-    CoreModule, 
-  ],
+  imports: [TypeOrmModule.forFeature([Card, Deck]), CoreModule],
   providers: [DecksService],
   controllers: [DecksController],
 })

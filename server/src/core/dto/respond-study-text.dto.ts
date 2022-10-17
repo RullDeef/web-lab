@@ -1,9 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { StudyText } from "../entities/study-text.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { StudyText } from '../entities/study-text.entity';
 
 export class RespondStudyTextDto {
   @ApiProperty({
-    description: 'Идентификатор текста'
+    description: 'Идентификатор текста',
   })
   id: number;
 

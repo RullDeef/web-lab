@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Quiz } from "../entities/quiz.entity";
-import { RespondQuizQuestionDto } from "./respond-quiz-question.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { Quiz } from '../entities/quiz.entity';
+import { RespondQuizQuestionDto } from './respond-quiz-question.dto';
 
 export class RespondQuizDto {
   @ApiProperty({
@@ -23,6 +23,6 @@ export class RespondQuizDto {
   constructor(quiz: Quiz) {
     this.id = quiz.id;
     this.title = quiz.title;
-    this.questions = quiz.questions.map(q => new RespondQuizQuestionDto(q));
+    this.questions = quiz.questions.map((q) => new RespondQuizQuestionDto(q));
   }
 }

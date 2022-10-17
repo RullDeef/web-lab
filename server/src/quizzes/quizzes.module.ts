@@ -12,7 +12,11 @@ import { QuizzesService } from './services/quizzes.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      Quiz, QuizQuestion, QuizOption, QuizResult, QuizAnswer,
+      Quiz,
+      QuizQuestion,
+      QuizOption,
+      QuizResult,
+      QuizAnswer,
     ]),
     CoreModule,
   ],

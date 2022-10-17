@@ -1,7 +1,17 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { StudyGroup } from "../../core/entities/study-group.entity";
-import { User } from "../../core/entities/user.entity";
-import { QuizQuestion } from "./quiz-question.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { StudyGroup } from '../../core/entities/study-group.entity';
+import { User } from '../../core/entities/user.entity';
+import { QuizQuestion } from './quiz-question.entity';
 
 @Entity({ name: 'quizzes' })
 export class Quiz {
@@ -15,7 +25,7 @@ export class Quiz {
   @JoinColumn({ name: 'creator_id' })
   creator: User;
 
-  @OneToMany(() => QuizQuestion, q => q.quiz, { eager: true })
+  @OneToMany(() => QuizQuestion, (q) => q.quiz, { eager: true })
   questions: QuizQuestion[];
 
   @ManyToMany(() => StudyGroup)

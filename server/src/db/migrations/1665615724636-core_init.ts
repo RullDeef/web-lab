@@ -29,7 +29,8 @@ export class coreInit1665615724636 implements MigrationInterface {
       `ALTER TABLE "study_groups" ADD CONSTRAINT "FK_e3ac0a4eb7d61c4e82115fa86e7" FOREIGN KEY ("tutor_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "texts" ADD CONSTRAINT "FK_7b54bc8fe8fc2319b30ae3ce90e" FOREIGN KEY ("creator_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+      `ALTER TABLE "texts" ADD CONSTRAINT "FK_7b54bc8fe8fc2319b30ae3ce90e" FOREIGN KEY ("creator_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
     await queryRunner.query(
       `ALTER TABLE "study_groups_users" ADD CONSTRAINT "FK_a61bf7c64f54dd642599528ff37" FOREIGN KEY ("group_id") REFERENCES "study_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
     );

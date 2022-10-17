@@ -1,5 +1,16 @@
-import { Body, Controller, Logger, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Logger,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { AuthDto } from '../dto/auth.dto';
 import { RespondAuthDto } from '../dto/respond-auth.dto';
 import { AuthService } from '../services/auth/auth.service';
@@ -22,7 +33,7 @@ export class AuthController {
   @Post('auth/login')
   @UseGuards(LocalAuthGuard)
   async login(@Request() req, @Body() auth: AuthDto) {
-    this.logger.log('login', req);
+    this.logger.log('login', auth);
 
     return this.authService.login(req.user);
   }

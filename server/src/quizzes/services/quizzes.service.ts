@@ -1,11 +1,11 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { User } from "../../core/entities/user.entity";
-import { CreateQuizDto } from "../dto/create-quiz.dto";
-import { QuizOption } from "../entities/quiz-option.entity";
-import { QuizQuestion } from "../entities/quiz-question.entity";
-import { Quiz } from "../entities/quiz.entity";
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../../core/entities/user.entity';
+import { CreateQuizDto } from '../dto/create-quiz.dto';
+import { QuizOption } from '../entities/quiz-option.entity';
+import { QuizQuestion } from '../entities/quiz-question.entity';
+import { Quiz } from '../entities/quiz.entity';
 
 @Injectable()
 export class QuizzesService {
@@ -28,7 +28,7 @@ export class QuizzesService {
     quiz_data.creator = creator;
 
     const quiz = this.quizRepo.create(quiz_data);
-    quiz.questions = dto.questions.map(q => {
+    quiz.questions = dto.questions.map((q) => {
       const question: Partial<QuizQuestion> = {};
       question.question = q.question;
       question.options = q.options.map((o, index) => {
@@ -41,7 +41,7 @@ export class QuizzesService {
 
       return this.questionRepo.create(question);
     });
-    
+
     return await this.quizRepo.save(quiz);
   }
 

@@ -14,11 +14,11 @@ async function bootstrap() {
       'Система контроля выполнения домашних заданий по дисциплине "английский язык"',
     )
     .setVersion('0.0.1')
-    .addBearerAuth(
-      //{
-      //description: 'JWT токен для авторизации',
-      //}
-    )
+    .addBearerAuth
+    //{
+    //description: 'JWT токен для авторизации',
+    //}
+    ()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

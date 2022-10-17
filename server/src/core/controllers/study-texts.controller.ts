@@ -8,7 +8,16 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { CreateStudyTextDto } from '../dto/create-study-text.dto';
 import { RespondStudyTextDto } from '../dto/respond-study-text.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
@@ -33,7 +42,7 @@ export class StudyTextsController {
   @UseGuards(JwtGuard)
   async create(@Body() body: CreateStudyTextDto) {
     this.logger.log('create', body);
-    
+
     const text = await this.service.create(body);
     return new RespondStudyTextDto(text);
   }
@@ -51,9 +60,9 @@ export class StudyTextsController {
   @UseGuards(JwtGuard)
   async getAll() {
     this.logger.log('getAll');
-    
+
     const texts = await this.service.findAll();
-    return texts.map(t => new RespondStudyTextDto(t));
+    return texts.map((t) => new RespondStudyTextDto(t));
   }
 
   @Get(':id')
@@ -98,7 +107,7 @@ export class StudyTextsController {
   @UseGuards(JwtGuard)
   async delete(@Param('id') id: number) {
     this.logger.log('delete id=' + id);
-    
+
     await this.service.delete(id);
   }
 }

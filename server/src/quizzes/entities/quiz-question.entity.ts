@@ -1,6 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { QuizOption } from "./quiz-option.entity";
-import { Quiz } from "./quiz.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { QuizOption } from './quiz-option.entity';
+import { Quiz } from './quiz.entity';
 
 @Entity({ name: 'quiz_questions' })
 export class QuizQuestion {
@@ -14,6 +21,6 @@ export class QuizQuestion {
   @Column()
   question: string;
 
-  @OneToMany(() => QuizOption, o => o.question, { eager: true })
+  @OneToMany(() => QuizOption, (o) => o.question, { eager: true })
   options: QuizOption[];
 }

@@ -8,7 +8,14 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { CreateStudyGroupDto } from '../dto/create-study-group.dto';
 import { RespondStudyGroupDto } from '../dto/respond-study-group.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
@@ -52,7 +59,9 @@ export class StudyGroupsController {
   async getAll() {
     this.logger.log('getAll');
 
-    return (await this.service.findAll()).map(s => new RespondStudyGroupDto(s));
+    return (await this.service.findAll()).map(
+      (s) => new RespondStudyGroupDto(s),
+    );
   }
 
   @Get(':id')

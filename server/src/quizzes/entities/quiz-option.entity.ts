@@ -1,5 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { QuizQuestion } from "./quiz-question.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { QuizQuestion } from './quiz-question.entity';
 
 @Entity({ name: 'quiz_options' })
 export class QuizOption {

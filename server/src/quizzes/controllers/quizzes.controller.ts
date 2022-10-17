@@ -1,9 +1,28 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Request, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
-import { JwtGuard } from "../../core/services/auth/jwt.guard";
-import { CreateQuizDto } from "../dto/create-quiz.dto";
-import { RespondQuizDto } from "../dto/respond-quiz.dto";
-import { QuizzesService } from "../services/quizzes.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { JwtGuard } from '../../core/services/auth/jwt.guard';
+import { CreateQuizDto } from '../dto/create-quiz.dto';
+import { RespondQuizDto } from '../dto/respond-quiz.dto';
+import { QuizzesService } from '../services/quizzes.service';
 
 @ApiTags('Quizzes')
 @Controller('quizzes')
@@ -46,7 +65,7 @@ export class QuizzesController {
     this.logger.log('by user', req.user);
 
     const decks = await this.service.findAll();
-    return decks.map(d => new RespondQuizDto(d));
+    return decks.map((d) => new RespondQuizDto(d));
   }
 
   @Get(':id')
@@ -79,7 +98,7 @@ export class QuizzesController {
     description: 'Идентификатор Теста',
   })
   @ApiNoContentResponse({
-    description: 'Тест успешно удален'
+    description: 'Тест успешно удален',
   })
   @ApiNotFoundResponse({
     description: 'Тест не найден',
