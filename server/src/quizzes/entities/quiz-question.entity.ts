@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { QuizOption } from "./quiz-option.entity";
 import { Quiz } from "./quiz.entity";
 
@@ -7,13 +7,13 @@ export class QuizQuestion {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Quiz)
+  @ManyToOne(() => Quiz)
   @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
   @Column()
   question: string;
 
-  @OneToMany(() => QuizOption, o => o.question)
+  @OneToMany(() => QuizOption, o => o.question, { eager: true })
   options: QuizOption[];
 }

@@ -4,10 +4,10 @@ export class quizzesInit1665952783625 implements MigrationInterface {
     name = 'quizzesInit1665952783625'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "quizzes" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "creator_id" integer, CONSTRAINT "REL_415fa0f36f70c345fc59ec9474" UNIQUE ("creator_id"), CONSTRAINT "PK_b24f0f7662cf6b3a0e7dba0a1b4" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "quiz_questions" ("id" SERIAL NOT NULL, "question" character varying NOT NULL, "quiz_id" integer, CONSTRAINT "REL_14c6d2b8f5be0bdb406a3895bb" UNIQUE ("quiz_id"), CONSTRAINT "PK_ec0447fd30d9f5c182e7653bfd3" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "quizzes" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "creator_id" integer, CONSTRAINT "PK_b24f0f7662cf6b3a0e7dba0a1b4" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "quiz_questions" ("id" SERIAL NOT NULL, "question" character varying NOT NULL, "quiz_id" integer, CONSTRAINT "PK_ec0447fd30d9f5c182e7653bfd3" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "quiz_options" ("id" SERIAL NOT NULL, "content" character varying NOT NULL, "is_correct" boolean NOT NULL, "question_id" integer, CONSTRAINT "PK_9c59607f100085ab17f0f138926" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "quiz_results" ("id" SERIAL NOT NULL, "score" integer NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "quiz_id" integer, "student_id" integer, CONSTRAINT "REL_28848f36ed7c878f3d8dd75437" UNIQUE ("student_id"), CONSTRAINT "PK_4ecf38c5bf5b054ccc9f10e438a" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "quiz_results" ("id" SERIAL NOT NULL, "score" integer NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "quiz_id" integer, "student_id" integer, CONSTRAINT "PK_4ecf38c5bf5b054ccc9f10e438a" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "quiz_answers" ("id" SERIAL NOT NULL, "quiz_result_id" integer, "option_id" integer, CONSTRAINT "PK_3fefbc8a840a41b6a15a4f9ca5e" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "study_groups_quizzes" ("study_group_id" integer NOT NULL, "quiz_id" integer NOT NULL, CONSTRAINT "PK_94c0ba15e48996aba70437bb7d2" PRIMARY KEY ("study_group_id", "quiz_id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_4261c10b6fda3371a697d9dd3c" ON "study_groups_quizzes" ("study_group_id") `);

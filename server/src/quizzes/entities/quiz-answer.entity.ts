@@ -11,7 +11,7 @@ export class QuizAnswer {
   @JoinColumn({ name: 'quiz_result_id' })
   quiz_result: QuizResult;
 
-  @ManyToOne(() => QuizOption)
+  @ManyToOne(() => QuizOption, { eager: true })
   @JoinColumn({ name: 'option_id' })
   option: QuizOption;
 }

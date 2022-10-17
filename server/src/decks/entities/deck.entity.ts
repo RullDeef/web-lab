@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { StudyGroup } from "../../core/entities/study-group.entity";
 import { User } from "../../core/entities/user.entity";
 import { Card } from "./card.entity";
@@ -11,10 +11,10 @@ export class Deck {
     @Column()
     title: string;
 
-    @OneToMany(() => Card, (card: Card) => card.deck)
+    @OneToMany(() => Card, (card: Card) => card.deck, { eager: true })
     cards: Card[];
 
-    @OneToOne(() => User)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'creator_id' })
     creator: User;
 

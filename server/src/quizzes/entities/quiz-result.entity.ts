@@ -12,11 +12,11 @@ export class QuizResult {
   @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'student_id' })
   student: User;
 
-  @OneToMany(() => QuizAnswer, q => q.quiz_result)
+  @OneToMany(() => QuizAnswer, q => q.quiz_result, { eager: true })
   answers: QuizAnswer;
 
   @Column()

@@ -5,6 +5,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -18,11 +19,11 @@ export class StudyGroup {
   @Column()
   title: string;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, { eager: true })
   @JoinColumn({ name: 'tutor_id' })
   tutor: User;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, { eager: true })
   @JoinTable({
     name: 'study_groups_users',
     joinColumn: {

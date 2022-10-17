@@ -12,6 +12,7 @@ export default new DataSource({
         join(__dirname, '**/*.entity.ts')
     ],
     migrations: [
-        join(__dirname, 'src/db/migrations/*.ts')
-    ]
+        join(__dirname, 'src/db/seeders/*.ts')
+    ],
+    migrationsTableName: 'seeders',
 });
