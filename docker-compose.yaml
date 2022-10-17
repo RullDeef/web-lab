@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   nginx:
-    image: nginx:alpine
+    image: byjg/nginx-extras
     volumes:
       - ./nginx/logs:/etc/nginx/logs
       - ./nginx/static:/home/static:ro
