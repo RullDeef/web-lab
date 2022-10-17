@@ -23,6 +23,7 @@ export class AuthController {
 
   constructor(private readonly authService: AuthService) {}
 
+  @Post('auth/login')
   @ApiOkResponse({
     description: 'Успешная авторизация',
     type: RespondAuthDto,
@@ -30,11 +31,10 @@ export class AuthController {
   @ApiUnauthorizedResponse({
     description: 'Неверные логин и/или пароль',
   })
-  @Post('auth/login')
   @UseGuards(LocalAuthGuard)
   async login(@Request() req, @Body() auth: AuthDto) {
     this.logger.log('login', auth);
 
-    return this.authService.login(req.user);
+    return await this.authService.login(req.user);
   }
 }

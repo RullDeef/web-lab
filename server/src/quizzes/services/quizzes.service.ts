@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../core/entities/user.entity';
+import { CreateQuizResultDto } from '../dto/create-quiz-result.dto';
 import { CreateQuizDto } from '../dto/create-quiz.dto';
 import { QuizOption } from '../entities/quiz-option.entity';
 import { QuizQuestion } from '../entities/quiz-question.entity';
@@ -61,5 +62,11 @@ export class QuizzesService {
     this.logger.log('delete id=' + id);
 
     return await this.quizRepo.delete({ id });
+  }
+
+  async solve(id: number, solution: CreateQuizResultDto) {
+    this.logger.log('solve id=' + id);
+
+    ///TODO: implement
   }
 }

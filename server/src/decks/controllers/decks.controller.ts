@@ -12,6 +12,7 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -39,6 +40,10 @@ export class DecksController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async create(@Request() req, @Body() dto: CreateDeckDto) {
@@ -57,6 +62,10 @@ export class DecksController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -83,6 +92,10 @@ export class DecksController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async findById(@Param('id') id: number) {
@@ -105,6 +118,10 @@ export class DecksController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)

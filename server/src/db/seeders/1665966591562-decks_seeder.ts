@@ -27,8 +27,6 @@ export class decksSeeder1665966591562 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('truncate table decks_study_groups');
-    await queryRunner.query('truncate table cards');
-    await queryRunner.query('truncate table decks');
+    await queryRunner.query('truncate table decks_study_groups, cards, decks');
   }
 }

@@ -7,6 +7,7 @@ import {
   randUserName,
 } from '@ngneat/falso';
 import { rand } from '@ngneat/falso';
+import { hashSync } from 'bcrypt';
 
 export class UserFactory extends BaseFactory<Partial<User>> {
   create(): Partial<User> {
@@ -15,7 +16,7 @@ export class UserFactory extends BaseFactory<Partial<User>> {
       last_name: randLastName(),
       role: rand(Object.values(UserRole)),
       login: randUserName() + randUserName(),
-      password: randPassword(),
+      password: hashSync(randPassword(), 2),
     };
   }
 }

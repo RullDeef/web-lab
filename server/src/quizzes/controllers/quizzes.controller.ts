@@ -12,6 +12,7 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -20,6 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtGuard } from '../../core/services/auth/jwt.guard';
+import { CreateQuizResultDto } from '../dto/create-quiz-result.dto';
 import { CreateQuizDto } from '../dto/create-quiz.dto';
 import { RespondQuizDto } from '../dto/respond-quiz.dto';
 import { QuizzesService } from '../services/quizzes.service';
@@ -39,6 +41,10 @@ export class QuizzesController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async create(@Request() req, @Body() dto: CreateQuizDto) {
@@ -57,6 +63,10 @@ export class QuizzesController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -83,6 +93,10 @@ export class QuizzesController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async findById(@Param('id') id: number) {
@@ -106,11 +120,41 @@ export class QuizzesController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async delete(@Param('id') id: number) {
     this.logger.log('delete id=' + id);
 
     await this.service.delete(id);
+  }
+
+  @Post(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'Идентификатор Теста',
+  })
+  @ApiNoContentResponse({
+    description: 'Решение успешно добавлено',
+  })
+  @ApiNotFoundResponse({
+    description: 'Тест не найден',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  async solve(@Param('id') id: number, result: CreateQuizResultDto) {
+    this.logger.log('solve id=' + id);
+
+    await this.service.solve(id, result);
   }
 }

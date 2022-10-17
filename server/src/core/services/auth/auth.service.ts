@@ -1,5 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
 import { UsersService } from '../users.service';
 
 @Injectable()
@@ -16,12 +17,12 @@ export class AuthService {
 
     const user = await this.usersService.findByLogin(login);
 
-    if (user && user.password == password) {
+    if (user && (await compare(password, user.password))) {
       const { login, password, ...result } = user;
       return result;
     }
 
-    return null;
+    throw new UnauthorizedException();
   }
 
   async login(user: any) {

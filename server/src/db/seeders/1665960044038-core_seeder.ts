@@ -1,4 +1,5 @@
 import { rand } from '@ngneat/falso';
+import { hash } from 'bcrypt';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { StudyGroup } from '../../core/entities/study-group.entity';
 import { StudyText } from '../../core/entities/study-text.entity';
@@ -14,7 +15,7 @@ export class coreSeeder1665960044038 implements MigrationInterface {
       first_name: 'admin',
       last_name: 'adminovich',
       login: 'admin',
-      password: 'admin',
+      password: await hash('admin', 10),
       role: UserRole.ADMIN,
     } as Partial<User>);
 
@@ -50,10 +51,6 @@ export class coreSeeder1665960044038 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('truncate table study_groups_texts');
-    await queryRunner.query('truncate table texts');
-    await queryRunner.query('truncate table study_groups_users');
-    await queryRunner.query('truncate table study_groups');
-    await queryRunner.query('truncate table users');
+    await queryRunner.query('truncate table texts, study_groups_users, study_groups, users cascade');
   }
 }

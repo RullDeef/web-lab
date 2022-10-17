@@ -11,6 +11,7 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -38,6 +39,10 @@ export class StudyTextsController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async create(@Body() body: CreateStudyTextDto) {
@@ -55,6 +60,10 @@ export class StudyTextsController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -80,6 +89,10 @@ export class StudyTextsController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async getById(@Param('id') id: number) {
@@ -102,6 +115,10 @@ export class StudyTextsController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)

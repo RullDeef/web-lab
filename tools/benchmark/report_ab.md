@@ -1,7 +1,7 @@
 ### Запускаемая команда
 
 ```shell
-ab -n30000 -c200 http://localhost/
+ab -n30000 -c200 http://localhost/api/v1
 ```
 
 ### Без балансировки
@@ -11,7 +11,7 @@ Server Software:        nginx/1.23.1
 Server Hostname:        localhost
 Server Port:            80
 
-Document Path:          /
+Document Path:          /api/v1
 Document Length:        727 bytes
 
 Concurrency Level:      200
@@ -51,7 +51,7 @@ Server Software:        nginx/1.23.1
 Server Hostname:        localhost
 Server Port:            80
 
-Document Path:          /
+Document Path:          /api/v1
 Document Length:        727 bytes
 
 Concurrency Level:      200

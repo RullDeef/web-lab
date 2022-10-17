@@ -5,6 +5,7 @@ import {
   Get,
   Logger,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -12,6 +13,7 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -20,6 +22,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { EditUserDto } from '../dto/edit-user.dto';
 import { RespondUserDto } from '../dto/respond-user.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
 import { UsersService } from '../services/users.service';
@@ -39,6 +42,10 @@ export class UsersController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async create(@Request() req, @Body() dto: CreateUserDto) {
@@ -57,6 +64,10 @@ export class UsersController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -83,12 +94,44 @@ export class UsersController {
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async findById(@Param('id') id: number) {
     this.logger.log('findById id=' + id);
 
     const user = await this.service.findById(id);
+    return new RespondUserDto(user);
+  }
+
+  @Patch(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'Идентификатор пользователя',
+  })
+  @ApiOkResponse({
+    description: 'Пользователь найден',
+    type: RespondUserDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
+  async edit(@Param('id') id: number, @Body() data: EditUserDto) {
+    this.logger.log('edit id=' + id);
+
+    const user = await this.service.edit(id, data);
     return new RespondUserDto(user);
   }
 
@@ -105,6 +148,10 @@ export class UsersController {
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'У пользователя недостаточно прав для выполнения этого действия',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
