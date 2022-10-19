@@ -20,10 +20,10 @@ export class coreSeeder1665960044038 implements MigrationInterface {
       role: UserRole.ADMIN,
     } as Partial<UserEntity>);
 
-    const tutors = new UserFactory().generate(100, {
+    const tutors = new UserFactory().generate(10, {
       role: UserRole.TUTOR,
     });
-    const students = new UserFactory().generate(2000, {
+    const students = new UserFactory().generate(200, {
       role: UserRole.STUDENT,
     });
 
@@ -34,12 +34,12 @@ export class coreSeeder1665960044038 implements MigrationInterface {
       (u) => u.role == UserRole.STUDENT,
     );
 
-    let texts = new StudyTextFactory().generate(400);
+    let texts = new StudyTextFactory().generate(40);
     texts = await queryRunner.manager.save(StudyTextEntity, texts);
     for (const text of texts) text.creator = rand(saved_tutors);
     await queryRunner.manager.save(StudyTextEntity, texts);
 
-    const groups = new StudyGroupFactory().generate(200);
+    const groups = new StudyGroupFactory().generate(20);
     const saved_groups = await queryRunner.manager.save(
       StudyGroupEntity,
       groups,

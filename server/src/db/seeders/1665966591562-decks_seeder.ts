@@ -11,7 +11,7 @@ export class decksSeeder1665966591562 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const decks = await queryRunner.manager.save(
       DeckEntity,
-      new DeckFactory().generate(100),
+      new DeckFactory().generate(10),
     );
     const tutors = await queryRunner.manager.find(UserEntity, {
       where: { role: UserRole.TUTOR },

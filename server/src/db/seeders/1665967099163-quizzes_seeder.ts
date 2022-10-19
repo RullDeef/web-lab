@@ -17,7 +17,7 @@ export class quizzesSeeder1665967099163 implements MigrationInterface {
 
     const quizzes = await queryRunner.manager.save(
       QuizEntity,
-      new QuizFactory().generate(200),
+      new QuizFactory().generate(20),
     );
     for (const quiz of quizzes) {
       quiz.creator = rand(tutors);
