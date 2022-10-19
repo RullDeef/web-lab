@@ -3,7 +3,7 @@ info:
   title: Система контроля выполнения домашних заданий по дисциплине "английский язык"
   version: 0.0.1
 servers:
-  - url: http://localhost:3000/api/v1
+  - url: http://localhost/api/v1
     description: Dev server
 paths:
   /users:
@@ -29,11 +29,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        409:
+          description: Конфликт
     get:
       summary: Получение списка всех пользователей
       tags:
         - Users
-      operationId: getUsers
+      parameters:
+        - name: role
+          in: query
+          schema:
+            type: string
+            enum: [admin, tutor, student]
+            example: student
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
       responses:
         200:
           description: Успешный ответ
@@ -43,6 +69,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/user'
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
   /users/{id}:
     get:
       summary: Получение пользователя по идентификатору
@@ -63,7 +93,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-    put:
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Пользователь с заданным идентификатором не найден
+    patch:
       summary: Изменение данных пользователя по идентификатору
       tags:
         - Users
@@ -89,6 +127,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
     delete:
       summary: Удаление пользователя по идентификатору
       tags:
@@ -103,6 +147,138 @@ paths:
       responses:
         200:
           description: Пользователь успешно удален
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+  /users/{id}/texts:
+    get:
+      summary: Получение списка текстов созданных пользователем
+      tags:
+        - Users
+        - Texts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/text'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Пользователь с заданным идентификатором не найден
+  /users/{id}/decks:
+    get:
+      summary: Получение списка колод карточек созданных пользователем
+      tags:
+        - Users
+        - Decks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/deck'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Пользователь с заданным идентификатором не найден
+  /users/{id}/quizzes:
+    get:
+      summary: Получение списка тестов созданных пользователем
+      tags:
+        - Users
+        - Quizzes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quiz'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Пользователь с заданным идентификатором не найден
 
   /texts:
     post:
@@ -121,10 +297,29 @@ paths:
       responses:
         201:
           description: Текст успешно добавлен
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
     get:
       summary: Получение списка текстов для чтения
       tags:
         - Texts
+      parameters:
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
       responses:
         200:
           description: Успешный ответ
@@ -134,6 +329,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/text'
+        401:
+          description: Пользователь не авторизован
   /texts/{id}:
     get:
       summary: Получение текста для чтения по идентификатору
@@ -153,32 +350,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/text'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Текст с заданным идентификатором не найден
     put:
-      summary: Изменение текста для чтения по идентификатору
+      summary: Обновление текста
       tags:
         - Texts
       parameters:
         - name: id
           in: path
           required: true
-          description: Идентификатор текста для чтения
+          description: Идентификатор текста
           schema:
             type: integer
-      requestBody: 
-        required: true
+          example: 1
+      requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/text'
-            example:
-              title: London
       responses:
         200:
-          description: Данные успешно изменены
+          description: Успешный ответ
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/text'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Тест с заданным идентификатором не найден
     delete:
       summary: Удаление текста для чтения по идентификатору
       tags:
@@ -193,6 +404,12 @@ paths:
       responses:
         200:
           description: Текст успешно удален
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
 
   /quizzes:
     post:
@@ -208,7 +425,6 @@ paths:
               properties:
                 title:
                   type: string
-                
       responses:
         201:
           description: Тест успешно создан
@@ -216,10 +432,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/quiz'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
     get:
       summary: Получение списка тестов
       tags:
         - Quizzes
+      parameters:
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
       responses:
         200:
           description: Успешный ответ
@@ -229,6 +464,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/quiz'
+        401:
+          description: Пользователь не авторизован
   /quizzes/{id}:
     get:
       summary: Получение теста по идентификатору
@@ -248,8 +485,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/quiz'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Текст с заданным идентификатором не найден
     put:
-      summary: Изменение теста по идентификатору
+      summary: Обновление теста
       tags:
         - Quizzes
       parameters:
@@ -259,19 +504,27 @@ paths:
           description: Идентификатор теста
           schema:
             type: integer
-      requestBody: 
-        required: true
+          example: 1
+      requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/quiz'
       responses:
         200:
-          description: Данные успешно изменены
+          description: Успешный ответ
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/text'
+                $ref: '#/components/schemas/quiz'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Тест с заданным идентификатором не найден
     delete:
       summary: Удаление теста по идентификатору
       tags:
@@ -286,6 +539,144 @@ paths:
       responses:
         200:
           description: Тест успешно удален
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+  /quizzes/{id}/solutions:
+    post:
+      summary: Добавление решения теста студентом
+      tags:
+        - Quizzes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор теста
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/solution'
+      responses:
+        204:
+          description: Решение успешно добавлено
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Тест с заданным идентификатором не найден
+    get:
+      summary: Получение всех решений по конкретному тесту
+      tags:
+        - Quizzes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор теста
+          schema:
+            type: integer
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/solution'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Тест с заданным идентификатором не найден
+  /quizzes/{qid}/solutions/{sid}:
+    get:
+      summary: Получить решение теста по идентификатору
+      tags:
+        - Quizzes
+      parameters:
+        - name: qid
+          in: path
+          required: true
+          description: Идентификатор теста
+          schema:
+            type: integer
+        - name: sid
+          in: path
+          required: true
+          description: Идентификатор решения
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/solution'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Тест с заданным идентификатором не найден, или решение с заданным идентификатором не найдено
+  /solutions:
+    get:
+      summary: Получение всех решений тестов
+      tags:
+        - Quizzes
+      parameters:
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/solution'
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
 
   /decks:
     post:
@@ -304,10 +695,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deck'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
     get:
       summary: Получение списка колод карточек
       tags:
         - Decks
+      parameters:
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
       responses:
         200:
           description: Успешный ответ
@@ -317,6 +727,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/deck'
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
   /decks/{id}:
     get:
       summary: Получение колоды карт по идентификатору
@@ -337,10 +751,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deck'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
         404:
-          description: Колоды с заданным идентификатором не существует
+          description: Колода с заданным идентификатором не найдена
     put:
-      summary: Изменение колоды карт по идентификатору
+      summary: Обновление колоды карточек
       tags:
         - Decks
       parameters:
@@ -350,19 +770,27 @@ paths:
           description: Идентификатор колоды карт
           schema:
             type: integer
-      requestBody: 
-        required: true
+          example: 1
+      requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/deck'
       responses:
         200:
-          description: Данные успешно изменены
+          description: Успешный ответ
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/deck'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Колода с заданным идентификатором не найдена
     delete:
       summary: Удаление колоды карт по идентификатору
       tags:
@@ -378,6 +806,12 @@ paths:
       responses:
         200:
           description: Успешное удаление
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
 
   /study-groups:
     post:
@@ -414,11 +848,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/study-group'
         400:
-          description: Передан идентификатор несуществующего пользователя
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Пользователь с заданным идентификотором не найден
     get:
       summary: Получение списка учебных групп
       tags:
         - Study Groups
+      parameters:
+        - name: skip
+          in: query
+          description: Количество записей, которые необходимо пропустить
+          schema:
+            type: integer
+            example: 0
+        - name: limit
+          in: query
+          description: Ограничение числа возвращаемых записей
+          schema:
+            type: integer
+            example: 20
       responses:
         200:
           description: Успешный ответ
@@ -428,6 +881,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/study-group'
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
   /study-groups/{id}:
     get:
       summary: Получение учебной группы по идентификатору
@@ -448,8 +905,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/study-group'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Учебная группа с заданным идентификатором не найдена
     put:
-      summary: Изменение учебной группы по идентификатору
+      summary: Обновление учебной группы
       tags:
         - Study Groups
       parameters:
@@ -459,19 +924,27 @@ paths:
           description: Идентификатор учебной группы
           schema:
             type: integer
-      requestBody: 
-        required: true
+          example: 1
+      requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/study-group'
       responses:
         200:
-          description: Данные успешно изменены
+          description: Успешный ответ
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/study-group'
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
+        404:
+          description: Учебная группа с заданным идентификатором не найдена
     delete:
       summary: Удаление учебной группы по идентификатору
       tags:
@@ -487,8 +960,14 @@ paths:
       responses:
         200:
           description: Успешное удаление
+        400:
+          description: Некорректный запрос
+        401:
+          description: Пользователь не авторизован
+        403:
+          description: У пользователя недостаточно прав для выполнения данного действия
 
-components: 
+components:
   schemas: 
     error:
       type: object
@@ -583,6 +1062,18 @@ components:
                   - Brasil
                   - Great Britan
                   - France
+    solution:
+      type: object
+      properties:
+        answers:
+          type: array
+          description: Список ответов на вопросы
+          items:
+            type: array
+            description: Список ответов на вопрос
+            items:
+              type: integer
+              description: Номера выбранных ответов
     card:
       type: object
       required:
