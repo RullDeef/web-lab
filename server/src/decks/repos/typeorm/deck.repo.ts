@@ -1,9 +1,9 @@
-import { Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Deck } from "../../models/deck.model";
-import { DeckRepository } from "../interfaces/deck.repo";
-import { DeckEntity } from "./entities/deck.entity";
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Deck } from '../../models/deck.model';
+import { DeckRepository } from '../interfaces/deck.repo';
+import { DeckEntity } from './entities/deck.entity';
 
 @Injectable()
 export class TypeORMDeckRepository implements DeckRepository {
@@ -22,13 +22,13 @@ export class TypeORMDeckRepository implements DeckRepository {
   }
 
   async findAll(): Promise<Deck[]> {
-    let decks = await this.repo.find();
-    return decks.map(d => d.toModel());
+    const decks = await this.repo.find({ relations: { creator: true } });
+    return decks.map((d) => d.toModel());
   }
 
   async findById(id: number): Promise<Deck> {
     try {
-      let deck = await this.repo.findOneByOrFail({ id });
+      const deck = await this.repo.findOneByOrFail({ id });
       return deck.toModel();
     } catch (e) {
       this.logger.log(`exception: ${e}`);

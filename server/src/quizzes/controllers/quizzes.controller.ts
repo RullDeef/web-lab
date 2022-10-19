@@ -21,6 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtGuard } from '../../core/services/auth/jwt.guard';
+import { UsersService } from '../../core/services/users.service';
 import { CreateQuizResultDto } from '../dto/create-quiz-result.dto';
 import { CreateQuizDto } from '../dto/create-quiz.dto';
 import { RespondQuizDto } from '../dto/respond-quiz.dto';
@@ -31,7 +32,10 @@ import { QuizzesService } from '../services/quizzes.service';
 export class QuizzesController {
   private readonly logger = new Logger(QuizzesController.name);
 
-  constructor(private readonly service: QuizzesService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly quizzesService: QuizzesService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -51,7 +55,9 @@ export class QuizzesController {
     this.logger.log('create', dto);
     this.logger.log('by user', req.user);
 
-    const quiz = await this.service.create(dto, req.user);
+    let quiz = dto.toModel();
+    quiz.creator = await this.usersService.findById(req.user.userId);
+    quiz = await this.quizzesService.create(quiz);
     return new RespondQuizDto(quiz);
   }
 
@@ -70,11 +76,10 @@ export class QuizzesController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async findAll(@Request() req) {
+  async findAll() {
     this.logger.log('findAll');
-    this.logger.log('by user', req.user);
 
-    const decks = await this.service.findAll();
+    const decks = await this.quizzesService.findAll();
     return decks.map((d) => new RespondQuizDto(d));
   }
 
@@ -100,9 +105,9 @@ export class QuizzesController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async findById(@Param('id') id: number) {
-    this.logger.log('findById id=' + id);
+    this.logger.log(`findById id=${id}`);
 
-    const deck = await this.service.findById(id);
+    const deck = await this.quizzesService.findById(id);
     return new RespondQuizDto(deck);
   }
 
@@ -129,7 +134,7 @@ export class QuizzesController {
   async delete(@Param('id') id: number) {
     this.logger.log('delete id=' + id);
 
-    await this.service.delete(id);
+    await this.quizzesService.delete(id);
   }
 
   @Post(':id')
@@ -153,8 +158,8 @@ export class QuizzesController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async solve(@Param('id') id: number, result: CreateQuizResultDto) {
-    this.logger.log('solve id=' + id);
+    this.logger.log(`solve id=${id}`);
 
-    await this.service.solve(id, result);
+    await this.quizzesService.solve(id, result);
   }
 }

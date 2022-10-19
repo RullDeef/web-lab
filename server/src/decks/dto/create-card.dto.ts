@@ -21,7 +21,7 @@ export class CreateCardDto {
   translation: string;
 
   toModel(): Card {
-    let card = new Card();
+    const card = new Card();
 
     card.word = this.word;
     card.reading = this.reading;

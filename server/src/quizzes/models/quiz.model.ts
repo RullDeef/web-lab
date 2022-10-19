@@ -1,12 +1,12 @@
 import { StudyGroup } from '../../core/models/study-group.model';
 import { User } from '../../core/models/user.model';
-import { Card } from './card.model';
+import { QuizQuestion } from './quiz-quiestion.model';
 
-export class Deck {
+export class Quiz {
   id?: number;
   title: string;
-  cards: Card[];
-  study_groups: StudyGroup[];
   creator: User;
+  questions: QuizQuestion[];
+  study_groups: StudyGroup[];
   created_at: Date;
 }

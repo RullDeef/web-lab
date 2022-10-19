@@ -22,7 +22,9 @@ export class DeckEntity {
   @Column()
   title: string;
 
-  @OneToMany(() => CardEntity, (CardEntity: CardEntity) => CardEntity.deck, { eager: true })
+  @OneToMany(() => CardEntity, (CardEntity: CardEntity) => CardEntity.deck, {
+    eager: true,
+  })
   cards: CardEntity[];
 
   @ManyToOne(() => UserEntity)
@@ -41,20 +43,20 @@ export class DeckEntity {
   created_at: Date;
 
   toModel(): Deck {
-    let deck = new Deck();
+    const deck = new Deck();
 
     deck.id = this.id;
     deck.title = this.title;
     deck.creator = this.creator.toModel();
-    deck.cards = this.cards.map(c => c.toModel());
-    deck.study_groups = this.study_groups.map(g => g.toModel());
+    deck.cards = this.cards.map((c) => c.toModel());
+    deck.study_groups = this.study_groups?.map((g) => g.toModel()) ?? [];
     deck.created_at = this.created_at;
 
     return deck;
   }
 
   static fromModel(deck: Deck) {
-    let ent = new DeckEntity();
+    const ent = new DeckEntity();
 
     ent.id = deck.id;
     ent.title = deck.title;

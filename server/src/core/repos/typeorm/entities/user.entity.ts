@@ -26,7 +26,16 @@ export class UserEntity {
   password: string;
 
   toModel(): User {
-    return this as User;
+    const user = new User();
+
+    user.id = this.id;
+    user.first_name = this.first_name;
+    user.last_name = this.last_name;
+    user.role = this.role;
+    user.login = this.login;
+    user.password = this.password;
+
+    return user;
   }
 
   static fromModel(user: User) {

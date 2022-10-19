@@ -1,4 +1,3 @@
-import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,24 +7,25 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { QuizAnswer } from './quiz-answer.entity';
-import { Quiz } from './quiz.entity';
+import { UserEntity } from '../../../../core/repos/typeorm/entities/user.entity';
+import { QuizAnswerEntity } from './quiz-answer.entity';
+import { QuizEntity } from './quiz.entity';
 
 @Entity({ name: 'quiz_results' })
-export class QuizResult {
+export class QuizResultEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Quiz)
+  @ManyToOne(() => QuizEntity)
   @JoinColumn({ name: 'quiz_id' })
-  quiz: Quiz;
+  quiz: QuizEntity;
 
   @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'student_id' })
   student: UserEntity;
 
-  @OneToMany(() => QuizAnswer, (q) => q.quiz_result, { eager: true })
-  answers: QuizAnswer;
+  @OneToMany(() => QuizAnswerEntity, (q) => q.quiz_result, { eager: true })
+  answers: QuizAnswerEntity;
 
   @Column()
   score: number;

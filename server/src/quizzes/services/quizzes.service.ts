@@ -1,71 +1,43 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from 'src/core/repos/typeorm/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateQuizResultDto } from '../dto/create-quiz-result.dto';
-import { CreateQuizDto } from '../dto/create-quiz.dto';
-import { QuizOption } from '../entities/quiz-option.entity';
-import { QuizQuestion } from '../entities/quiz-question.entity';
-import { Quiz } from '../entities/quiz.entity';
+import { Quiz } from '../models/quiz.model';
+import { QuizRepository } from '../repos/interfaces/quiz.repo';
 
 @Injectable()
 export class QuizzesService {
   private readonly logger = new Logger(QuizzesService.name);
 
   constructor(
-    @InjectRepository(Quiz)
-    private readonly quizRepo: Repository<Quiz>,
-    @InjectRepository(QuizQuestion)
-    private readonly questionRepo: Repository<QuizQuestion>,
-    @InjectRepository(QuizOption)
-    private readonly optionRepo: Repository<QuizOption>,
+    @Inject(QuizRepository)
+    private readonly quizRepo: QuizRepository,
   ) {}
 
-  async create(dto: CreateQuizDto, creator: UserEntity) {
-    this.logger.log('create', dto);
+  async create(quiz: Quiz) {
+    this.logger.log('create', quiz);
 
-    const quiz_data: Partial<Quiz> = {};
-    quiz_data.title = dto.title;
-    quiz_data.creator = creator;
-
-    const quiz = this.quizRepo.create(quiz_data);
-    quiz.questions = dto.questions.map((q) => {
-      const question: Partial<QuizQuestion> = {};
-      question.question = q.question;
-      question.options = q.options.map((o, index) => {
-        const option: Partial<QuizOption> = {};
-        option.content = o;
-        option.is_correct = q.correct_options.includes(index + 1);
-
-        return this.optionRepo.create(option);
-      });
-
-      return this.questionRepo.create(question);
-    });
-
-    return await this.quizRepo.save(quiz);
+    return this.quizRepo.save(quiz);
   }
 
   async findAll() {
     this.logger.log('findAll');
 
-    return await this.quizRepo.find();
+    return this.quizRepo.findAll();
   }
 
   async findById(id: number) {
-    this.logger.log('findById id=' + id);
+    this.logger.log(`findById id=${id}`);
 
-    return await this.quizRepo.findOneBy({ id });
+    return this.quizRepo.findById(id);
   }
 
   async delete(id: number) {
-    this.logger.log('delete id=' + id);
+    this.logger.log(`delete id=${id}`);
 
-    return await this.quizRepo.delete({ id });
+    return this.quizRepo.delete(id);
   }
 
   async solve(id: number, solution: CreateQuizResultDto) {
-    this.logger.log('solve id=' + id);
+    this.logger.log(`solve id=${id}`);
 
     ///TODO: implement
   }

@@ -1,9 +1,9 @@
 import { randSentence } from '@ngneat/falso';
-import { Quiz } from '../../quizzes/entities/quiz.entity';
+import { QuizEntity } from '../../quizzes/repos/typeorm/entities/quiz.entity';
 import { BaseFactory } from './base-factory';
 
-export class QuizFactory extends BaseFactory<Partial<Quiz>> {
-  create(): Partial<Quiz> {
+export class QuizFactory extends BaseFactory<Partial<QuizEntity>> {
+  create(): Partial<QuizEntity> {
     return {
       title: randSentence(),
     };

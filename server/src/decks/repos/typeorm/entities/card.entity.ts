@@ -27,7 +27,7 @@ export class CardEntity {
   translation: string;
 
   toModel(): Card {
-    let card = new Card();
+    const card = new Card();
 
     card.id = this.id;
     card.word = this.word;
@@ -38,8 +38,8 @@ export class CardEntity {
   }
 
   static fromModel(card: Card) {
-    let ent = new CardEntity();
-    
+    const ent = new CardEntity();
+
     ent.id = card.id;
     ent.word = card.word;
     ent.reading = card.reading;

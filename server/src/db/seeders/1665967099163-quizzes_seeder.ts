@@ -2,12 +2,12 @@ import { rand } from '@ngneat/falso';
 import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { UserRole } from '../../core/models/user.model';
-import { QuizOption } from '../../quizzes/entities/quiz-option.entity';
-import { QuizQuestion } from '../../quizzes/entities/quiz-question.entity';
-import { Quiz } from '../../quizzes/entities/quiz.entity';
 import { QuizOptionFactory } from '../factories/quiz-option.factory';
 import { QuizQuestionFactory } from '../factories/quiz-question.factory';
 import { QuizFactory } from '../factories/quiz.factory';
+import { QuizEntity } from '../../quizzes/repos/typeorm/entities/quiz.entity';
+import { QuizQuestionEntity } from '../../quizzes/repos/typeorm/entities/quiz-question.entity';
+import { QuizOptionEntity } from '../../quizzes/repos/typeorm/entities/quiz-option.entity';
 
 export class quizzesSeeder1665967099163 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -16,25 +16,25 @@ export class quizzesSeeder1665967099163 implements MigrationInterface {
     });
 
     const quizzes = await queryRunner.manager.save(
-      Quiz,
+      QuizEntity,
       new QuizFactory().generate(200),
     );
     for (const quiz of quizzes) {
       quiz.creator = rand(tutors);
       quiz.questions = await queryRunner.manager.save(
-        QuizQuestion,
+        QuizQuestionEntity,
         new QuizQuestionFactory().generate(10),
       );
       for (const quest of quiz.questions) {
         quest.options = await queryRunner.manager.save(
-          QuizOption,
+          QuizOptionEntity,
           new QuizOptionFactory().generate(4, {
             question: quest,
           }),
         );
       }
     }
-    await queryRunner.manager.save(Quiz, quizzes);
+    await queryRunner.manager.save(QuizEntity, quizzes);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

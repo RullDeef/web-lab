@@ -1,4 +1,4 @@
-import { Deck } from "../../models/deck.model";
+import { Deck } from '../../models/deck.model';
 
 export interface DeckRepository {
   save(deck: Deck): Promise<Deck>;

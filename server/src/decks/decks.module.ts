@@ -9,10 +9,7 @@ import { DeckEntity } from './repos/typeorm/entities/deck.entity';
 import { DecksService } from './services/decks.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([CardEntity, DeckEntity]),
-    CoreModule,
-  ],
+  imports: [TypeOrmModule.forFeature([CardEntity, DeckEntity]), CoreModule],
   providers: [
     {
       provide: DeckRepository,

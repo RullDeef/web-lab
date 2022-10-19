@@ -2,25 +2,33 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoreModule } from '../core/core.module';
 import { QuizzesController } from './controllers/quizzes.controller';
-import { QuizAnswer } from './entities/quiz-answer.entity';
-import { QuizOption } from './entities/quiz-option.entity';
-import { QuizQuestion } from './entities/quiz-question.entity';
-import { QuizResult } from './entities/quiz-result.entity';
-import { Quiz } from './entities/quiz.entity';
+import { QuizRepository } from './repos/interfaces/quiz.repo';
+import { QuizAnswerEntity } from './repos/typeorm/entities/quiz-answer.entity';
+import { QuizOptionEntity } from './repos/typeorm/entities/quiz-option.entity';
+import { QuizQuestionEntity } from './repos/typeorm/entities/quiz-question.entity';
+import { QuizResultEntity } from './repos/typeorm/entities/quiz-result.entity';
+import { QuizEntity } from './repos/typeorm/entities/quiz.entity';
+import { TypeORMQuizRepository } from './repos/typeorm/quiz.repo';
 import { QuizzesService } from './services/quizzes.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      Quiz,
-      QuizQuestion,
-      QuizOption,
-      QuizResult,
-      QuizAnswer,
+      QuizEntity,
+      QuizQuestionEntity,
+      QuizOptionEntity,
+      QuizResultEntity,
+      QuizAnswerEntity,
     ]),
     CoreModule,
   ],
-  providers: [QuizzesService],
+  providers: [
+    {
+      provide: QuizRepository,
+      useClass: TypeORMQuizRepository,
+    },
+    QuizzesService,
+  ],
   controllers: [QuizzesController],
 })
 export class QuizzesModule {}

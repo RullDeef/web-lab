@@ -17,10 +17,10 @@ export class CreateDeckDto {
   cards: CreateCardDto[];
 
   toModel(): Deck {
-    let deck = new Deck();
+    const deck = new Deck();
 
     deck.title = this.title;
-    deck.cards = this.cards.map(c => c.toModel());
+    deck.cards = this.cards.map((c) => c.toModel());
     deck.study_groups = [];
 
     return deck;

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { QuizQuestion } from '../entities/quiz-question.entity';
+import { QuizQuestion } from '../models/quiz-quiestion.model';
 
 export class RespondQuizQuestionDto {
   @ApiProperty({
