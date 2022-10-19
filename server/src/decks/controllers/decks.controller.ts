@@ -21,6 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtGuard } from '../../core/services/auth/jwt.guard';
+import { UsersService } from '../../core/services/users.service';
 import { CreateDeckDto } from '../dto/create-deck.dto';
 import { RespondDeckDto } from '../dto/respond-deck.dto';
 import { DecksService } from '../services/decks.service';
@@ -30,7 +31,10 @@ import { DecksService } from '../services/decks.service';
 export class DecksController {
   private readonly logger = new Logger(DecksController.name);
 
-  constructor(private readonly service: DecksService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly decksService: DecksService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -47,10 +51,13 @@ export class DecksController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async create(@Request() req, @Body() dto: CreateDeckDto) {
-    this.logger.log('create', dto);
-    this.logger.log('by user', req.user);
+    this.logger.log('create');
+    this.logger.log(dto);
 
-    const deck = await this.service.create(dto);
+    let deck = dto.toModel();
+    deck.creator = await this.usersService.findById(req.user.userId);
+    deck = await this.decksService.create(deck);
+
     return new RespondDeckDto(deck);
   }
 
@@ -69,11 +76,10 @@ export class DecksController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async findAll(@Request() req) {
+  async findAll() {
     this.logger.log('findAll');
-    this.logger.log('by user', req.user);
 
-    const decks = await this.service.findAll();
+    const decks = await this.decksService.findAll();
     return decks.map((d) => new RespondDeckDto(d));
   }
 
@@ -99,9 +105,9 @@ export class DecksController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async findById(@Param('id') id: number) {
-    this.logger.log('findById id=' + id);
+    this.logger.log(`findById id=${id}`);
 
-    const deck = await this.service.findById(id);
+    const deck = await this.decksService.findById(id);
     return new RespondDeckDto(deck);
   }
 
@@ -126,8 +132,8 @@ export class DecksController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async delete(@Param('id') id: number) {
-    this.logger.log('delete id=' + id);
+    this.logger.log(`delete id=${id}`);
 
-    await this.service.delete(id);
+    await this.decksService.delete(id);
   }
 }

@@ -57,5 +57,8 @@ import { TypeORMStudyTextRepository } from './repos/typeorm/study-text.repo';
     StudyGroupsController,
     AuthController,
   ],
+  exports: [
+    UsersService,
+  ]
 })
 export class CoreModule {}

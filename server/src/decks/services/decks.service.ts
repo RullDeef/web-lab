@@ -1,40 +1,37 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateDeckDto } from '../dto/create-deck.dto';
-import { Deck } from '../entities/deck.entity';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Deck } from '../models/deck.model';
+import { DeckRepository } from '../repos/interfaces/deck.repo';
 
 @Injectable()
 export class DecksService {
   private readonly logger = new Logger(DecksService.name);
 
   constructor(
-    @InjectRepository(Deck)
-    private readonly repository: Repository<Deck>,
+    @Inject(DeckRepository)
+    private readonly repository: DeckRepository,
   ) {}
 
-  async create(deck: CreateDeckDto) {
+  async create(deck: Deck) {
     this.logger.log('create', deck);
 
-    const d = this.repository.create(deck);
-    return await this.repository.save(d);
+    return this.repository.save(deck);
   }
 
   async findAll() {
     this.logger.log('findAll');
 
-    return await this.repository.find();
+    return this.repository.findAll();
   }
 
   async findById(id: number) {
-    this.logger.log('findById id=' + id);
+    this.logger.log(`findById id=${id}`);
 
-    return await this.repository.findOneBy({ id });
+    return this.repository.findById(id);
   }
 
   async delete(id: number) {
-    this.logger.log('delete id=' + id);
+    this.logger.log(`delete id=${id}`);
 
-    return await this.repository.delete({ id });
+    return this.repository.delete(id);
   }
 }

@@ -2,13 +2,24 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoreModule } from '../core/core.module';
 import { DecksController } from './controllers/decks.controller';
-import { Card } from './entities/card.entity';
-import { Deck } from './entities/deck.entity';
+import { DeckRepository } from './repos/interfaces/deck.repo';
+import { TypeORMDeckRepository } from './repos/typeorm/deck.repo';
+import { CardEntity } from './repos/typeorm/entities/card.entity';
+import { DeckEntity } from './repos/typeorm/entities/deck.entity';
 import { DecksService } from './services/decks.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Card, Deck]), CoreModule],
-  providers: [DecksService],
+  imports: [
+    TypeOrmModule.forFeature([CardEntity, DeckEntity]),
+    CoreModule,
+  ],
+  providers: [
+    {
+      provide: DeckRepository,
+      useClass: TypeORMDeckRepository,
+    },
+    DecksService,
+  ],
   controllers: [DecksController],
 })
 export class DecksModule {}

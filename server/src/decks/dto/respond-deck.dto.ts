@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Deck } from '../entities/deck.entity';
+import { Deck } from '../models/deck.model';
 import { RespondCardDto } from './respond-card.dto';
 
 export class RespondDeckDto {

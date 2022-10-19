@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Card } from '../models/card.model';
 
 export class CreateCardDto {
   @ApiProperty({
@@ -18,4 +19,14 @@ export class CreateCardDto {
     example: 'общепринятый',
   })
   translation: string;
+
+  toModel(): Card {
+    let card = new Card();
+
+    card.word = this.word;
+    card.reading = this.reading;
+    card.translation = this.translation;
+
+    return card;
+  }
 }

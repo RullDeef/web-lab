@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Card } from '../entities/card.entity';
+import { Card } from '../models/card.model';
 
 export class RespondCardDto {
   @ApiProperty({
@@ -25,10 +25,10 @@ export class RespondCardDto {
   })
   translation: string;
 
-  constructor(card: Card) {
-    this.id = card.id;
-    this.word = card.word;
-    this.reading = card.reading;
-    this.translation = card.translation;
+  constructor(CardEntity: Card) {
+    this.id = CardEntity.id;
+    this.word = CardEntity.word;
+    this.reading = CardEntity.reading;
+    this.translation = CardEntity.translation;
   }
 }

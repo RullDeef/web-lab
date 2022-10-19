@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Deck } from '../models/deck.model';
 import { CreateCardDto } from './create-card.dto';
 
 export class CreateDeckDto {
@@ -14,4 +15,14 @@ export class CreateDeckDto {
     isArray: true,
   })
   cards: CreateCardDto[];
+
+  toModel(): Deck {
+    let deck = new Deck();
+
+    deck.title = this.title;
+    deck.cards = this.cards.map(c => c.toModel());
+    deck.study_groups = [];
+
+    return deck;
+  }
 }
