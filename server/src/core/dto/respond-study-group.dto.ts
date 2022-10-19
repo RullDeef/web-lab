@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { StudyGroup } from '../entities/study-group.entity';
+import { StudyGroup } from '../models/study-group.model';
 import { RespondUserDto } from './respond-user.dto';
 
 export class RespondStudyGroupDto {

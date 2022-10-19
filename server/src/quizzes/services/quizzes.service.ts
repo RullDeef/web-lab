@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/core/repos/typeorm/entities/user.entity';
 import { Repository } from 'typeorm';
-import { User } from '../../core/entities/user.entity';
 import { CreateQuizResultDto } from '../dto/create-quiz-result.dto';
 import { CreateQuizDto } from '../dto/create-quiz.dto';
 import { QuizOption } from '../entities/quiz-option.entity';
@@ -21,7 +21,7 @@ export class QuizzesService {
     private readonly optionRepo: Repository<QuizOption>,
   ) {}
 
-  async create(dto: CreateQuizDto, creator: User) {
+  async create(dto: CreateQuizDto, creator: UserEntity) {
     this.logger.log('create', dto);
 
     const quiz_data: Partial<Quiz> = {};

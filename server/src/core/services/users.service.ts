@@ -1,61 +1,88 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
-import { Repository } from 'typeorm';
-import { EditUserDto } from '../dto/edit-user.dto';
-import { User } from '../entities/user.entity';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { compare, hash } from 'bcrypt';
+import { User } from '../models/user.model';
+import { UserRepository } from '../repos/interfaces/user.repo';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
-
   private readonly saltRounds = 10;
 
   constructor(
-    @InjectRepository(User)
-    private readonly repository: Repository<User>,
+    @Inject(UserRepository)
+    private readonly repository: UserRepository,
   ) {}
 
-  async create(user: Partial<User>) {
+  async create(user: User) {
+    user.password = await this.encryptPassword(user.password);
     this.logger.log('create', user);
 
-    const u = this.repository.create(user);
-    return await this.repository.save(u);
+    return this.repository.save(user);
   }
 
   async findAll() {
     this.logger.log('findAll');
 
-    return await this.repository.find();
+    return this.repository.findAll();
   }
 
   async findById(id: number) {
-    this.logger.log('findById id=' + id);
+    this.logger.log(`findById id=${id}`);
 
-    return await this.repository.findOneBy({ id });
+    return this.repository.findById(id);
   }
 
-  async edit(id: number, data: EditUserDto) {
-    this.logger.log('edit id=' + id);
-    this.logger.log('data:', data);
+  async edit(id: number, data: Partial<User>) {
+    this.logger.log(`edit id=${id}`);
 
-    if (data.password !== undefined) {
-      data.password = await hash(data.password, this.saltRounds);
+    if (!(await this.repository.existsById(id))) {
+      this.logger.log(`user with id=${id} not found`);
+      throw new NotFoundException();
     }
 
-    const user = await this.repository.findOneByOrFail({ id });
-    return await this.repository.save({ ...user, ...data });
+    if (data.password !== undefined) {
+      data.password = await this.encryptPassword(data.password);
+    }
+    this.logger.log('data:', data);
+
+    if (
+      data.login !== undefined &&
+      (await this.repository.existsByLogin(data.login))
+    ) {
+      // check that login matches unique constraint
+      if (id != (await this.repository.findByLogin(data.login)).id) {
+        throw new ConflictException();
+      }
+    }
+
+    let user = await this.repository.findById(id);
+    user = { ...user, ...data };
+    return this.repository.save(user);
   }
 
   async delete(id: number) {
-    this.logger.log('delete id=' + id);
+    this.logger.log(`delete id=${id}`);
 
-    return await this.repository.delete({ id });
+    return this.repository.delete(id);
   }
 
   async findByLogin(login: string) {
-    this.logger.log('findByLogin login=' + login);
+    this.logger.log(`findByLogin login=${login}`);
 
-    return await this.repository.findOneBy({ login });
+    return this.repository.findByLogin(login);
+  }
+
+  private async encryptPassword(password: string): Promise<string> {
+    return hash(password, this.saltRounds);
+  }
+
+  async checkPassword(password: string, hashed: string): Promise<boolean> {
+    return compare(password, hashed);
   }
 }

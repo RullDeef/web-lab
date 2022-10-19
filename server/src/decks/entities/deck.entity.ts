@@ -1,3 +1,5 @@
+import { StudyGroupEntity } from '../../core/repos/typeorm/entities/study-group.entity';
+import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,8 +11,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { StudyGroup } from '../../core/entities/study-group.entity';
-import { User } from '../../core/entities/user.entity';
 import { Card } from './card.entity';
 
 @Entity({ name: 'decks' })
@@ -24,17 +24,17 @@ export class Deck {
   @OneToMany(() => Card, (card: Card) => card.deck, { eager: true })
   cards: Card[];
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: User;
+  creator: UserEntity;
 
-  @ManyToMany(() => StudyGroup)
+  @ManyToMany(() => StudyGroupEntity)
   @JoinTable({
     name: 'decks_study_groups',
     joinColumn: { name: 'deck_id' },
     inverseJoinColumn: { name: 'study_group_id' },
   })
-  study_groups: StudyGroup[];
+  study_groups: StudyGroupEntity[];
 
   @CreateDateColumn()
   created_at: Date;

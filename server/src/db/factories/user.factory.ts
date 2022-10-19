@@ -1,4 +1,3 @@
-import { User, UserRole } from '../../core/entities/user.entity';
 import { BaseFactory } from './base-factory';
 import {
   randFirstName,
@@ -8,6 +7,7 @@ import {
 } from '@ngneat/falso';
 import { rand } from '@ngneat/falso';
 import { hashSync } from 'bcrypt';
+import { User, UserRole } from '../../core/models/user.model';
 
 export class UserFactory extends BaseFactory<Partial<User>> {
   create(): Partial<User> {

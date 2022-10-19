@@ -1,3 +1,4 @@
+import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -7,7 +8,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from '../../core/entities/user.entity';
 import { QuizAnswer } from './quiz-answer.entity';
 import { Quiz } from './quiz.entity';
 
@@ -20,9 +20,9 @@ export class QuizResult {
   @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'student_id' })
-  student: User;
+  student: UserEntity;
 
   @OneToMany(() => QuizAnswer, (q) => q.quiz_result, { eager: true })
   answers: QuizAnswer;

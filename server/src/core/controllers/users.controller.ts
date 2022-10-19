@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
@@ -45,6 +46,9 @@ export class UsersController {
   @ApiForbiddenResponse({
     description:
       'У пользователя недостаточно прав для выполнения этого действия',
+  })
+  @ApiConflictResponse({
+    description: 'Пользователь с таким логином уже существует',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -88,15 +92,15 @@ export class UsersController {
     description: 'Пользователь найден',
     type: RespondUserDto,
   })
-  @ApiNotFoundResponse({
-    description: 'Пользователь не найден',
-  })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
   @ApiForbiddenResponse({
     description:
       'У пользователя недостаточно прав для выполнения этого действия',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -116,15 +120,15 @@ export class UsersController {
     description: 'Пользователь найден',
     type: RespondUserDto,
   })
-  @ApiNotFoundResponse({
-    description: 'Пользователь не найден',
-  })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
   })
   @ApiForbiddenResponse({
     description:
       'У пользователя недостаточно прав для выполнения этого действия',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
@@ -142,9 +146,6 @@ export class UsersController {
   })
   @ApiNoContentResponse({
     description: 'Пользователь успешно удален',
-  })
-  @ApiNotFoundResponse({
-    description: 'Пользователь не найден',
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',

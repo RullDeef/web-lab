@@ -1,6 +1,7 @@
 import { rand } from '@ngneat/falso';
+import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { User, UserRole } from '../../core/entities/user.entity';
+import { UserRole } from '../../core/models/user.model';
 import { QuizOption } from '../../quizzes/entities/quiz-option.entity';
 import { QuizQuestion } from '../../quizzes/entities/quiz-question.entity';
 import { Quiz } from '../../quizzes/entities/quiz.entity';
@@ -10,7 +11,7 @@ import { QuizFactory } from '../factories/quiz.factory';
 
 export class quizzesSeeder1665967099163 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const tutors = await queryRunner.manager.find(User, {
+    const tutors = await queryRunner.manager.find(UserEntity, {
       where: { role: UserRole.TUTOR },
     });
 

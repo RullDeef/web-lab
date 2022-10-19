@@ -1,9 +1,9 @@
 import { rand } from '@ngneat/falso';
-import { StudyGroup } from '../../core/entities/study-group.entity';
+import { StudyGroupEntity } from '../../core/repos/typeorm/entities/study-group.entity';
 import { BaseFactory } from './base-factory';
 
-export class StudyGroupFactory extends BaseFactory<Partial<StudyGroup>> {
-  create(): Partial<StudyGroup> {
+export class StudyGroupFactory extends BaseFactory<Partial<StudyGroupEntity>> {
+  create(): Partial<StudyGroupEntity> {
     return {
       title:
         rand(['ИУ', 'СМ', 'РК', 'РЛ', 'СГН', 'МТ']) +

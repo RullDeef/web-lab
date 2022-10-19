@@ -1,0 +1,70 @@
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserEntity } from './entities/user.entity';
+import { User } from '../../models/user.model';
+import { UserRepository } from '../interfaces/user.repo';
+
+@Injectable()
+export class TypeORMUserRepository implements UserRepository {
+  private readonly logger = new Logger(TypeORMUserRepository.name);
+
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly repo: Repository<UserEntity>,
+  ) {}
+
+  async save(user: User) {
+    try {
+      let entity = UserEntity.fromModel(user);
+      entity = this.repo.create(entity);
+      entity = await this.repo.save(entity);
+      return entity.toModel();
+    } catch (e) {
+      this.logger.log(`excecption: ${e}`);
+      throw new ConflictException();
+    }
+  }
+
+  async existsById(id: number): Promise<boolean> {
+    return (await this.repo.countBy({ id })) == 1;
+  }
+
+  async existsByLogin(login: string): Promise<boolean> {
+    return (await this.repo.countBy({ login })) == 1;
+  }
+
+  async findAll() {
+    const users = await this.repo.find();
+    return users.map((u) => u.toModel());
+  }
+
+  async findById(id: number) {
+    try {
+      const user = await this.repo.findOneByOrFail({ id });
+      return user.toModel();
+    } catch (e) {
+      this.logger.log(`exception: ${e}`);
+      throw new NotFoundException();
+    }
+  }
+
+  async findByLogin(login: string): Promise<User> {
+    try {
+      const user = await this.repo.findOneByOrFail({ login });
+      return user.toModel();
+    } catch (e) {
+      this.logger.log(`exception: ${e}`);
+      throw new NotFoundException();
+    }
+  }
+
+  async delete(id: number) {
+    await this.repo.delete({ id });
+  }
+}

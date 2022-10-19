@@ -6,6 +6,7 @@ import {
   Logger,
   Param,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -23,13 +24,17 @@ import { CreateStudyTextDto } from '../dto/create-study-text.dto';
 import { RespondStudyTextDto } from '../dto/respond-study-text.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
 import { StudyTextService } from '../services/study-texts.service';
+import { UsersService } from '../services/users.service';
 
 @ApiTags('Texts')
 @Controller('texts')
 export class StudyTextsController {
   private readonly logger = new Logger(StudyTextsController.name);
 
-  constructor(private service: StudyTextService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly textsService: StudyTextService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -45,10 +50,13 @@ export class StudyTextsController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async create(@Body() body: CreateStudyTextDto) {
+  async create(@Request() req, @Body() body: CreateStudyTextDto) {
     this.logger.log('create', body);
 
-    const text = await this.service.create(body);
+    let text = CreateStudyTextDto.toModel(body);
+    text.creator = await this.usersService.findById(req.user.userId);
+
+    text = await this.textsService.create(text);
     return new RespondStudyTextDto(text);
   }
 
@@ -70,7 +78,7 @@ export class StudyTextsController {
   async getAll() {
     this.logger.log('getAll');
 
-    const texts = await this.service.findAll();
+    const texts = await this.textsService.findAll();
     return texts.map((t) => new RespondStudyTextDto(t));
   }
 
@@ -96,9 +104,9 @@ export class StudyTextsController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async getById(@Param('id') id: number) {
-    this.logger.log('getById id=' + id);
+    this.logger.log(`getById id=${id}`);
 
-    const text = await this.service.findById(id);
+    const text = await this.textsService.findById(id);
     return new RespondStudyTextDto(text);
   }
 
@@ -123,8 +131,8 @@ export class StudyTextsController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
   async delete(@Param('id') id: number) {
-    this.logger.log('delete id=' + id);
+    this.logger.log(`delete id=${id}`);
 
-    await this.service.delete(id);
+    await this.textsService.delete(id);
   }
 }

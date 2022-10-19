@@ -9,8 +9,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { StudyGroup } from '../../core/entities/study-group.entity';
-import { User } from '../../core/entities/user.entity';
+import { StudyGroupEntity } from '../../core/repos/typeorm/entities/study-group.entity';
+import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import { QuizQuestion } from './quiz-question.entity';
 
 @Entity({ name: 'quizzes' })
@@ -21,20 +21,20 @@ export class Quiz {
   @Column()
   title: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'creator_id' })
-  creator: User;
+  creator: UserEntity;
 
   @OneToMany(() => QuizQuestion, (q) => q.quiz, { eager: true })
   questions: QuizQuestion[];
 
-  @ManyToMany(() => StudyGroup)
+  @ManyToMany(() => StudyGroupEntity)
   @JoinTable({
     name: 'study_groups_quizzes',
     joinColumn: { name: 'study_group_id' },
     inverseJoinColumn: { name: 'quiz_id' },
   })
-  study_groups: StudyGroup[];
+  study_groups: StudyGroupEntity[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,9 +1,10 @@
 import { rand } from '@ngneat/falso';
 import { hash } from 'bcrypt';
+import { UserRole } from '../../core/models/user.model';
+import { StudyGroupEntity } from '../../core/repos/typeorm/entities/study-group.entity';
+import { StudyTextEntity } from '../../core/repos/typeorm/entities/study-text.entity';
+import { UserEntity } from '../../core/repos/typeorm/entities/user.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { StudyGroup } from '../../core/entities/study-group.entity';
-import { StudyText } from '../../core/entities/study-text.entity';
-import { User, UserRole } from '../../core/entities/user.entity';
 import { StudyGroupFactory } from '../factories/group.factory';
 import { StudyTextFactory } from '../factories/text.factory';
 import { UserFactory } from '../factories/user.factory';
@@ -11,13 +12,13 @@ import { UserFactory } from '../factories/user.factory';
 export class coreSeeder1665960044038 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // create admin account
-    await queryRunner.manager.save(User, {
+    await queryRunner.manager.save(UserEntity, {
       first_name: 'admin',
       last_name: 'adminovich',
       login: 'admin',
       password: await hash('admin', 10),
       role: UserRole.ADMIN,
-    } as Partial<User>);
+    } as Partial<UserEntity>);
 
     const tutors = new UserFactory().generate(100, {
       role: UserRole.TUTOR,
@@ -27,19 +28,22 @@ export class coreSeeder1665960044038 implements MigrationInterface {
     });
 
     const users = tutors.concat(students);
-    const saved_users = await queryRunner.manager.save(User, users);
+    const saved_users = await queryRunner.manager.save(UserEntity, users);
     const saved_tutors = saved_users.filter((u) => u.role == UserRole.TUTOR);
     const saved_students = saved_users.filter(
       (u) => u.role == UserRole.STUDENT,
     );
 
     let texts = new StudyTextFactory().generate(400);
-    texts = await queryRunner.manager.save(StudyText, texts);
+    texts = await queryRunner.manager.save(StudyTextEntity, texts);
     for (const text of texts) text.creator = rand(saved_tutors);
-    await queryRunner.manager.save(StudyText, texts);
+    await queryRunner.manager.save(StudyTextEntity, texts);
 
     const groups = new StudyGroupFactory().generate(200);
-    const saved_groups = await queryRunner.manager.save(StudyGroup, groups);
+    const saved_groups = await queryRunner.manager.save(
+      StudyGroupEntity,
+      groups,
+    );
 
     for (const group of saved_groups) {
       group.tutor = rand(saved_tutors);
@@ -47,10 +51,12 @@ export class coreSeeder1665960044038 implements MigrationInterface {
       for (let i = 0; i < 10; i++) group.students.push(saved_students.pop());
     }
 
-    await queryRunner.manager.save(StudyGroup, saved_groups);
+    await queryRunner.manager.save(StudyGroupEntity, saved_groups);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('truncate table texts, study_groups_users, study_groups, users cascade');
+    await queryRunner.query(
+      'truncate table texts, study_groups_users, study_groups, users cascade',
+    );
   }
 }

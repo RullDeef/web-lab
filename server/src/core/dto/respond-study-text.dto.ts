@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { StudyText } from '../entities/study-text.entity';
+import { StudyText } from '../models/study-text.model';
 
 export class RespondStudyTextDto {
   @ApiProperty({
