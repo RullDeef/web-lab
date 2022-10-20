@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StudyGroup } from '../../models/study-group.model';
+import { FilterOptions } from '../interfaces/filter-options.interface';
 import { StudyGroupRepository } from '../interfaces/study-group.repo';
 import { StudyGroupEntity } from './entities/study-group.entity';
 
@@ -47,6 +48,11 @@ export class TypeORMStudyGroupRepository implements StudyGroupRepository {
       this.logger.log(`exception: e`);
       throw new NotFoundException();
     }
+  }
+
+  async findFiltered(opts: FilterOptions): Promise<StudyGroup[]> {
+    const groups = await this.repo.find({ skip: opts.skip, take: opts.limit });
+    return groups.map((g) => g.toModel());
   }
 
   async delete(id: number): Promise<void> {

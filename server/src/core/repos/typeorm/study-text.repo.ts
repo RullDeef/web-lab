@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StudyText } from '../../models/study-text.model';
+import { FilterOptions } from '../interfaces/filter-options.interface';
 import { StudyTextRepository } from '../interfaces/study-text.repo';
 import { StudyTextEntity } from './entities/study-text.entity';
 
@@ -37,6 +38,11 @@ export class TypeORMStudyTextRepository implements StudyTextRepository {
       this.logger.log(`exception: ${e}`);
       throw new NotFoundException();
     }
+  }
+
+  async findFiltered(opts: FilterOptions): Promise<StudyText[]> {
+    const texts = await this.repo.find({ skip: opts.skip, take: opts.limit, relations: { creator: true } });
+    return texts.map((t) => t.toModel());
   }
 
   async delete(id: number): Promise<void> {

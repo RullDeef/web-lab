@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -17,10 +18,12 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateStudyTextDto } from '../dto/create-study-text.dto';
+import { FilterOptsQuery, FilterOptsQueryDto } from '../dto/filter-opts.query.dto';
 import { RespondStudyTextDto } from '../dto/respond-study-text.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
 import { StudyTextService } from '../services/study-texts.service';
@@ -61,10 +64,27 @@ export class StudyTextsController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Количество записей, которые необходимо получить',
+    type: Number,
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    description: 'Количество записей, которые необходимо пропустить',
+    type: Number,
+    example: 0,
+  })
   @ApiOkResponse({
     description: 'Успешный ответ',
     type: RespondStudyTextDto,
     isArray: true,
+  })
+  @ApiBadRequestResponse({
+    description: 'некорректный запрос',
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
@@ -75,10 +95,10 @@ export class StudyTextsController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async getAll() {
+  async getAll(@FilterOptsQuery() filterOpts: FilterOptsQueryDto) {
     this.logger.log('getAll');
 
-    const texts = await this.textsService.findAll();
+    const texts = await this.textsService.findAll(filterOpts);
     return texts.map((t) => new RespondStudyTextDto(t));
   }
 

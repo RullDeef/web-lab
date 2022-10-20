@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { FilterOptions } from '../../core/repos/interfaces/filter-options.interface';
 import { CreateQuizResultDto } from '../dto/create-quiz-result.dto';
 import { Quiz } from '../models/quiz.model';
 import { QuizRepository } from '../repos/interfaces/quiz.repo';
@@ -18,10 +19,10 @@ export class QuizzesService {
     return this.quizRepo.save(quiz);
   }
 
-  async findAll() {
-    this.logger.log('findAll');
+  async findAll(filterOpts: FilterOptions) {
+    this.logger.log(`findAll filterOpts=${JSON.stringify(filterOpts)}`);
 
-    return this.quizRepo.findAll();
+    return this.quizRepo.findFiltered(filterOpts);
   }
 
   async findById(id: number) {

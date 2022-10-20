@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateStudyGroupDto } from '../dto/create-study-group.dto';
 import { StudyGroup } from '../models/study-group.model';
+import { FilterOptions } from '../repos/interfaces/filter-options.interface';
 import { StudyGroupRepository } from '../repos/interfaces/study-group.repo';
 import { UserRepository } from '../repos/interfaces/user.repo';
 
@@ -35,10 +36,10 @@ export class StudyGroupsService {
     }
   }
 
-  async findAll() {
-    this.logger.log('findAll');
+  async findAll(filterOpts: FilterOptions) {
+    this.logger.log(`findAll filterOpts=${JSON.stringify(filterOpts)}`);
 
-    return this.studyGroupRepository.findAll();
+    return this.studyGroupRepository.findFiltered(filterOpts);
   }
 
   async findById(id: number) {

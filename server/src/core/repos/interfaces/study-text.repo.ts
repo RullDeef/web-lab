@@ -1,4 +1,5 @@
 import { StudyText } from '../../models/study-text.model';
+import { FilterOptions } from './filter-options.interface';
 
 export interface StudyTextRepository {
   save(text: StudyText): Promise<StudyText>;
@@ -7,6 +8,7 @@ export interface StudyTextRepository {
 
   findAll(): Promise<StudyText[]>;
   findById(id: number): Promise<StudyText>;
+  findFiltered(opts: FilterOptions): Promise<StudyText[]>;
 
   delete(id: number): Promise<void>;
 }

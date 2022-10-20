@@ -9,15 +9,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateStudyGroupDto } from '../dto/create-study-group.dto';
+import { FilterOptsQuery, FilterOptsQueryDto } from '../dto/filter-opts.query.dto';
 import { RespondStudyGroupDto } from '../dto/respond-study-group.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
 import { StudyGroupsService } from '../services/study-groups.service';
@@ -51,10 +54,27 @@ export class StudyGroupsController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Количество записей, которые необходимо получить',
+    type: Number,
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    description: 'Количество записей, которые необходимо пропустить',
+    type: Number,
+    example: 0,
+  })
   @ApiOkResponse({
     description: 'Успешный ответ',
     type: RespondStudyGroupDto,
     isArray: true,
+  })
+  @ApiBadRequestResponse({
+    description: 'некорректный запрос',
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
@@ -65,12 +85,11 @@ export class StudyGroupsController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async getAll() {
-    this.logger.log('getAll');
+  async getAll(@FilterOptsQuery() filterOpts: FilterOptsQueryDto) {
+    this.logger.log(`getAll filterOpts=${JSON.stringify(filterOpts)}`);
 
-    return (await this.service.findAll()).map(
-      (s) => new RespondStudyGroupDto(s),
-    );
+    const groups = await this.service.findAll(filterOpts);
+    return groups.map((g) => new RespondStudyGroupDto(g));
   }
 
   @Get(':id')

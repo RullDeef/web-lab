@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FilterOptions } from '../../../core/repos/interfaces/filter-options.interface';
 import { Deck } from '../../models/deck.model';
 import { DeckRepository } from '../interfaces/deck.repo';
 import { DeckEntity } from './entities/deck.entity';
@@ -34,6 +35,11 @@ export class TypeORMDeckRepository implements DeckRepository {
       this.logger.log(`exception: ${e}`);
       throw new NotFoundException();
     }
+  }
+
+  async findFiltered(opts: FilterOptions): Promise<Deck[]> {
+    const decks = await this.repo.find({ skip: opts.skip, take: opts.limit, relations: { creator: true } });
+    return decks.map((d) => d.toModel());
   }
 
   async delete(id: number): Promise<void> {

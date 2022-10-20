@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { FilterOptions } from '../../core/repos/interfaces/filter-options.interface';
 import { Deck } from '../models/deck.model';
 import { DeckRepository } from '../repos/interfaces/deck.repo';
 
@@ -17,10 +18,10 @@ export class DecksService {
     return this.repository.save(deck);
   }
 
-  async findAll() {
-    this.logger.log('findAll');
+  async findAll(filterOpts: FilterOptions) {
+    this.logger.log(`findAll filterOpts=${JSON.stringify(filterOpts)}`);
 
-    return this.repository.findAll();
+    return this.repository.findFiltered(filterOpts);
   }
 
   async findById(id: number) {

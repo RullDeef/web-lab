@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
 import { User } from '../models/user.model';
+import { FilterOptions } from '../repos/interfaces/filter-options.interface';
 import { UserRepository } from '../repos/interfaces/user.repo';
 
 @Injectable()
@@ -26,10 +27,10 @@ export class UsersService {
     return this.repository.save(user);
   }
 
-  async findAll() {
-    this.logger.log('findAll');
+  async findAll(opts: FilterOptions) {
+    this.logger.log(`findAll opts=${JSON.stringify(opts)}`);
 
-    return this.repository.findAll();
+    return this.repository.findFiltered(opts);
   }
 
   async findById(id: number) {

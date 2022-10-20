@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { StudyText } from '../models/study-text.model';
+import { FilterOptions } from '../repos/interfaces/filter-options.interface';
 import { StudyTextRepository } from '../repos/interfaces/study-text.repo';
 
 @Injectable()
@@ -18,10 +19,10 @@ export class StudyTextService {
     return this.repository.save(text);
   }
 
-  async findAll() {
-    this.logger.log('findAll');
+  async findAll(filterOpts: FilterOptions) {
+    this.logger.log(`findAll filterOpts=${JSON.stringify(filterOpts)}`);
 
-    return this.repository.findAll();
+    return this.repository.findFiltered(filterOpts);
   }
 
   async findById(id: number) {

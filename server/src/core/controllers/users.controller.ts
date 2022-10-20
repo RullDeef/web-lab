@@ -7,10 +7,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -19,11 +22,13 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { EditUserDto } from '../dto/edit-user.dto';
+import { FilterOptsQuery, FilterOptsQueryDto } from '../dto/filter-opts.query.dto';
 import { RespondUserDto } from '../dto/respond-user.dto';
 import { JwtGuard } from '../services/auth/jwt.guard';
 import { UsersService } from '../services/users.service';
@@ -61,10 +66,27 @@ export class UsersController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Количество записей, которые необходимо получить',
+    type: Number,
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    description: 'Количество записей, которые необходимо пропустить',
+    type: Number,
+    example: 0,
+  })
   @ApiOkResponse({
     description: 'Успешный ответ',
     type: RespondUserDto,
     isArray: true,
+  })
+  @ApiBadRequestResponse({
+    description: 'некорректный запрос',
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
@@ -75,11 +97,11 @@ export class UsersController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async findAll(@Request() req) {
-    this.logger.log('findAll');
+  async findAll(@Request() req, @FilterOptsQuery() filterOpts: FilterOptsQueryDto) {
+    this.logger.log(`findAll filterOpts=${JSON.stringify(filterOpts)}`);
     this.logger.log('by user', req.user);
 
-    const users = await this.service.findAll();
+    const users = await this.service.findAll(filterOpts);
     return users.map((u) => new RespondUserDto(u));
   }
 

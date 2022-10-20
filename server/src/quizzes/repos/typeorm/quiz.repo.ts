@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FilterOptions } from '../../../core/repos/interfaces/filter-options.interface';
 import { Quiz } from '../../models/quiz.model';
 import { QuizRepository } from '../interfaces/quiz.repo';
 import { QuizEntity } from './entities/quiz.entity';
@@ -41,6 +42,20 @@ export class TypeORMQuizRepository implements QuizRepository {
       this.logger.log(`exception: ${e}`);
       throw new NotFoundException();
     }
+  }
+
+  async findFiltered(opts: FilterOptions): Promise<Quiz[]> {
+    const quizzes = await this.repo.find({
+      skip: opts.skip,
+      take: opts.limit,
+      relations: {
+        creator: true,
+        questions: {
+          options: true,
+        },
+      },
+    });
+    return quizzes.map((q) => q.toModel());
   }
 
   async delete(id: number): Promise<void> {

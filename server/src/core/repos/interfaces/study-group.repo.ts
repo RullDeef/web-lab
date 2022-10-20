@@ -1,4 +1,5 @@
 import { StudyGroup } from '../../models/study-group.model';
+import { FilterOptions } from './filter-options.interface';
 
 export interface StudyGroupRepository {
   save(group: StudyGroup): Promise<StudyGroup>;
@@ -7,6 +8,7 @@ export interface StudyGroupRepository {
 
   findAll(): Promise<StudyGroup[]>;
   findById(id: number): Promise<StudyGroup>;
+  findFiltered(opts: FilterOptions): Promise<StudyGroup[]>;
 
   delete(id: number): Promise<void>;
 }

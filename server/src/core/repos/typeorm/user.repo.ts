@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { User } from '../../models/user.model';
 import { UserRepository } from '../interfaces/user.repo';
+import { FilterOptions } from '../interfaces/filter-options.interface';
 
 @Injectable()
 export class TypeORMUserRepository implements UserRepository {
@@ -62,6 +63,11 @@ export class TypeORMUserRepository implements UserRepository {
       this.logger.log(`exception: ${e}`);
       throw new NotFoundException();
     }
+  }
+
+  async findFiltered(opts: FilterOptions): Promise<User[]> {
+    const users = await this.repo.find({ skip: opts.skip, take: opts.limit });
+    return users.map((u) => u.toModel());
   }
 
   async delete(id: number) {

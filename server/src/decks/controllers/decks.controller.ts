@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -17,9 +18,11 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { FilterOptsQuery, FilterOptsQueryDto } from '../../core/dto/filter-opts.query.dto';
 import { JwtGuard } from '../../core/services/auth/jwt.guard';
 import { UsersService } from '../../core/services/users.service';
 import { CreateDeckDto } from '../dto/create-deck.dto';
@@ -62,10 +65,27 @@ export class DecksController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Количество записей, которые необходимо получить',
+    type: Number,
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    description: 'Количество записей, которые необходимо пропустить',
+    type: Number,
+    example: 0,
+  })
   @ApiOkResponse({
     description: 'Успешный ответ',
     type: RespondDeckDto,
     isArray: true,
+  })
+  @ApiBadRequestResponse({
+    description: 'некорректный запрос',
   })
   @ApiUnauthorizedResponse({
     description: 'Пользователь не авторизован',
@@ -76,10 +96,10 @@ export class DecksController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  async findAll() {
+  async findAll(@FilterOptsQuery() filterOpts: FilterOptsQueryDto) {
     this.logger.log('findAll');
 
-    const decks = await this.decksService.findAll();
+    const decks = await this.decksService.findAll(filterOpts);
     return decks.map((d) => new RespondDeckDto(d));
   }
 
