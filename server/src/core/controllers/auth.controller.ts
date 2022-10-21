@@ -13,6 +13,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthDto } from '../dto/auth.dto';
 import { RespondAuthDto } from '../dto/respond-auth.dto';
+import { RespondUserDto } from '../dto/respond-user.dto';
 import { AuthService } from '../services/auth/auth.service';
 import { LocalAuthGuard } from '../services/auth/local.guard';
 
@@ -35,6 +36,7 @@ export class AuthController {
   async login(@Request() req, @Body() auth: AuthDto) {
     this.logger.log('login', auth);
 
-    return await this.authService.login(req.user);
+    const { access_token } = await this.authService.login(req.user);
+    return { access_token, user: new RespondUserDto(req.user) };
   }
 }

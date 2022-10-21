@@ -1,5 +1,6 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../../models/user.model';
 import { UsersService } from '../users.service';
 
 @Injectable()
@@ -27,7 +28,7 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async login(user: any) {
+  async login(user: User) {
     this.logger.log('login', user);
 
     const payload = { username: user.login, sub: user.id };
