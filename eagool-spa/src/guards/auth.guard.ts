@@ -9,12 +9,12 @@ export default class AuthGuard {
     const authService = inject('auth-service') as AuthService;
 
     if (!authService.isAuthorized()) {
-      router.push({ name: 'auth' });
+      void router.push({ name: 'auth' });
     }
 
     const user = authService.getUser();
-    if (user.role != role) {
-      router.push({ name: 'forbidden' });
+    if (user.role !== role) {
+      void router.push({ name: 'forbidden' });
     }
 
     return user;

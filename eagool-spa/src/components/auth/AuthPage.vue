@@ -29,12 +29,14 @@ async function doAuth() {
     <h4>Авторизуйтесь, чтобы продолжить</h4>
     <div class="form-group mb-3">
       <label for="login-input">Логин</label>
-      <input id="login-input" class="form-control" v-model="login" type="text" placeholder="login" required />
+      <input id="login-input" class="form-control" v-model="login" type="text" />
     </div>
     <div class="form-group mb-3">
       <label for="password-input">Пароль</label>
-      <input id="password-input" class="form-control" v-model="password" type="password" placeholder="password" required />
+      <input id="password-input" class="form-control" v-model="password" type="password" />
     </div>
+    <div class="error text-danger" :class="{ visible: true }">Неверный логин или пароль</div>
+
     <input type="submit" class="btn btn-primary" value="Войти" @click="doAuth" />
   </div>
   </div>
