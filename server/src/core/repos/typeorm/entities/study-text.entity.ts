@@ -20,7 +20,7 @@ export class StudyTextEntity {
   @Column()
   content: string;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'creator_id' })
   creator: UserEntity;
 

@@ -7,11 +7,11 @@ export class QuizAnswerEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => QuizResultEntity, (r) => r.answers)
+  @ManyToOne(() => QuizResultEntity, (r) => r.answers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'quiz_result_id' })
   quiz_result: QuizResultEntity;
 
-  @ManyToOne(() => QuizOptionEntity, { eager: true })
+  @ManyToOne(() => QuizOptionEntity, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'option_id' })
   option: QuizOptionEntity;
 }

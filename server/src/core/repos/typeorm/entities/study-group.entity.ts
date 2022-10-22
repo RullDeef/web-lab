@@ -19,11 +19,11 @@ export class StudyGroupEntity {
   @Column()
   title: string;
 
-  @ManyToOne(() => UserEntity, { eager: true })
+  @ManyToOne(() => UserEntity, { eager: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'tutor_id' })
   tutor: UserEntity;
 
-  @ManyToMany(() => UserEntity, { eager: true })
+  @ManyToMany(() => UserEntity, { eager: true, onDelete: 'SET NULL' })
   @JoinTable({
     name: 'study_groups_users',
     joinColumn: {

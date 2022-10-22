@@ -13,7 +13,7 @@ export class QuizOptionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => QuizQuestionEntity)
+  @ManyToOne(() => QuizQuestionEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'question_id' })
   question: QuizQuestionEntity;
 

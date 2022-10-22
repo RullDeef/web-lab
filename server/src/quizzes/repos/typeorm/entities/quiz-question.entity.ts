@@ -15,14 +15,14 @@ export class QuizQuestionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => QuizEntity)
+  @ManyToOne(() => QuizEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'quiz_id' })
   quiz: QuizEntity;
 
   @Column()
   question: string;
 
-  @OneToMany(() => QuizOptionEntity, (o) => o.question, { eager: true })
+  @OneToMany(() => QuizOptionEntity, (o) => o.question, { eager: true, onDelete: 'CASCADE' })
   options: QuizOptionEntity[];
 
   toModel(): QuizQuestion {

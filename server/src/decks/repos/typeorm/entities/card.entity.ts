@@ -13,7 +13,7 @@ export class CardEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => DeckEntity)
+  @ManyToOne(() => DeckEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'deck_id' })
   deck: DeckEntity;
 
