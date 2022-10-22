@@ -3,10 +3,10 @@ import { User } from '../../models/user';
 
 export interface UsersTableProps {
   users: User[];
+  onDelete(id: number): void;
 }
 
 defineProps<UsersTableProps>();
-
 </script>
 
 <template>
@@ -14,11 +14,12 @@ defineProps<UsersTableProps>();
   <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Логин</th>
-        <th scope="col">Роль</th>
+        <th scope="col" style="width: 6.1%">ID</th>
+        <th scope="col" style="width: 22.7%">Фамилия</th>
+        <th scope="col" style="width: 18.2%">Имя</th>
+        <th scope="col" style="width: 18.2%">Логин</th>
+        <th scope="col" style="width: 12.1%">Роль</th>
+        <th scope="col" style="width: 22.7%">Действия</th>
       </tr>
     </thead>
     <tbody>
@@ -28,6 +29,15 @@ defineProps<UsersTableProps>();
         <td>{{ user.first_name }}</td>
         <td>&lt;login&gt;</td>
         <td>{{ user.role }}</td>
+        <td>
+          <b-button
+            size="sm"
+            variant="outline-danger"
+            @click="onDelete(user.id)"
+          >
+            <b-icon-trash-fill /> Удалить
+          </b-button>
+        </td>
       </tr>
     </tbody>
   </table>

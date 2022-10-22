@@ -25,4 +25,9 @@ export class UsersService {
     const result = await this.axios.post<any>('/users', dto);
     console.log(result);
   }
+
+  async deleteUser(id: number) {
+    const result = await this.axios.delete(`/users/${id}`);
+    console.log(result);
+  }
 }

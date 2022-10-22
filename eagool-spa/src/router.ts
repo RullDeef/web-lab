@@ -1,42 +1,35 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-import AuthPage from './components/auth/AuthPage.vue';
-import LogoutPage from './components/auth/LogoutPage.vue';
-import ForbiddenPage from './components/auth/ForbiddenPage.vue';
-import HomePage from './components/HomePage.vue';
-import AdminPage from './components/AdminPage.vue';
-import UsersPage from './components/admin/UsersPage.vue';
-
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: HomePage,
+    component: async () => await import('./components/HomePage.vue'),
   },
   {
     path: '/auth',
     name: 'auth',
-    component: AuthPage,
+    component: async () => await import('./components/auth/AuthPage.vue'),
   },
   {
     path: '/logout',
     name: 'logout',
-    component: LogoutPage,
+    component: async () => await import('./components/auth/LogoutPage.vue'),
   },
   {
     path: '/forbidden',
     name: 'forbidden',
-    component: ForbiddenPage,
+    component: async () => await import('./components/auth/ForbiddenPage.vue'),
   },
   {
     path: '/admin-panel',
     name: 'admin-panel',
-    component: AdminPage,
+    component: async () => await import('./components/AdminPage.vue'),
   },
   {
     path: '/admin-panel/users',
     name: 'admin-panel/users',
-    component: UsersPage,
+    component: async () => await import('./components/admin/UsersPage.vue'),
   },
 ];
 

@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import Navbar from '../utils/Navbar.vue';
+import NavBar from '../utils/NavBar.vue';
 </script>
 
 <template>
-  <Navbar :routes="[{name: 'Пользователи', path: '/admin-panel/users'}]" :auth="{name: 'Выйти', path: '/logout'}" />
+  <NavBar
+    :routes="[{ name: 'Пользователи', path: '/admin-panel/users' }]"
+    :auth="{ name: 'Выйти', path: '/logout' }"
+  />
 </template>
