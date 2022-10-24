@@ -31,6 +31,12 @@ const routes: RouteRecordRaw[] = [
     name: 'admin-panel/users',
     component: async () => await import('./components/admin/UsersPage.vue'),
   },
+  {
+    path: '/admin-panel/study-groups',
+    name: 'admin-panel/study-groups',
+    component: async () =>
+      await import('./components/admin/StudyGroupsPage.vue'),
+  },
 ];
 
 const router = createRouter({

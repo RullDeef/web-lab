@@ -27,8 +27,6 @@ export class AuthService {
   }
 
   isAuthorized(): boolean {
-    console.log(this.access_token);
-
     return this.access_token !== undefined;
   }
 

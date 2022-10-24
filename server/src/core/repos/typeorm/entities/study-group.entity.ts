@@ -45,7 +45,7 @@ export class StudyGroupEntity {
 
     group.id = this.id;
     group.title = this.title;
-    group.tutor = this.tutor.toModel();
+    group.tutor = this.tutor?.toModel();
     group.students = this.students.map((s) => s.toModel());
     group.created_at = this.created_at;
 

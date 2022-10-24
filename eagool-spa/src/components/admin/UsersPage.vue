@@ -3,14 +3,21 @@ import { inject, onMounted, ref } from 'vue';
 import { User, UserRole } from '../../models/user';
 import { UsersService } from '../../services/users.service';
 import AdminNavbar from './AdminNavbar.vue';
-import UsersTable from './UsersTable.vue';
-import UserRegisterForm from '../forms/UserRegisterForm.vue';
+import UsersTable from './views/UsersTable.vue';
+import UserRegisterForm from './forms/UserRegisterForm.vue';
 import AuthGuard from '../../guards/auth.guard';
+import Pager from '../utils/Pager.vue';
 
 const currentPage = ref(0);
 const users = ref<User[]>([]);
 
 const usersService = inject('users-service') as UsersService;
+
+async function editUser(user: User) {
+  /// TODO: implement
+  console.log('editing user:');
+  console.log(user);
+}
 
 async function deleteUser(id: number) {
   console.log(`deleting user with id=${id}`);
@@ -42,25 +49,28 @@ onMounted(async () => {
 <template>
   <AdminNavbar />
 
-  <div class="container mt-3">
-    <UsersTable :users="users" :on-delete="deleteUser" />
+  <b-container class="mt-3">
+    <h3>Список пользователей</h3>
+    <UsersTable :users="users" :on-edit="editUser" :on-delete="deleteUser" />
 
-    <div class="d-flex flex-row align-items-baseline">
-      <button
-        class="btn btn-primary"
+    <div class="d-flex flex-row justify-content-between align-items-baseline">
+      <b-button
+        variant="primary"
         data-bs-target="#register-user"
         data-bs-toggle="modal"
       >
         Добавить пользователя
-      </button>
+      </b-button>
 
-      <a class="mx-4" @click="toPrevPage" href="#"><b-icon-arrow-left /></a>
-      <span>страница: {{ currentPage + 1 }}</span>
-      <a class="mx-4" @click="toNextPage" href="#"><b-icon-arrow-right /></a>
+      <Pager
+        :curr-page="currentPage"
+        @prev-page="toPrevPage"
+        @next-page="toNextPage"
+      />
     </div>
 
     <div class="modal" id="register-user">
       <UserRegisterForm />
     </div>
-  </div>
+  </b-container>
 </template>

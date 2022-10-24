@@ -11,3 +11,14 @@ export interface User {
 
   role: UserRole;
 }
+
+export function translateUserRole(role: UserRole): string {
+  switch (role) {
+    case UserRole.admin:
+      return 'Администратор';
+    case UserRole.tutor:
+      return 'Преподаватель';
+    case UserRole.student:
+      return 'Студент';
+  }
+}

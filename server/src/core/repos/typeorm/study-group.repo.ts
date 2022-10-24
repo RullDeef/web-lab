@@ -51,7 +51,7 @@ export class TypeORMStudyGroupRepository implements StudyGroupRepository {
   }
 
   async findFiltered(opts: FilterOptions): Promise<StudyGroup[]> {
-    const groups = await this.repo.find({ skip: opts.skip, take: opts.limit });
+    const groups = await this.repo.find({ relations: { tutor: true, }, skip: opts.skip, take: opts.limit });
     return groups.map((g) => g.toModel());
   }
 

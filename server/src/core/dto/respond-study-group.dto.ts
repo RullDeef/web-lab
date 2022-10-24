@@ -30,7 +30,7 @@ export class RespondStudyGroupDto {
   constructor(group: StudyGroup) {
     this.id = group.id;
     this.title = group.title;
-    this.tutor = new RespondUserDto(group.tutor);
+    this.tutor = group.tutor ? new RespondUserDto(group.tutor) : null;
     this.students = group.students.map((s) => new RespondUserDto(s));
   }
 }

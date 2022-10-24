@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { User } from '../../models/user';
+import { User, translateUserRole } from '../../../models/user';
 
 export interface UsersTableProps {
   users: User[];
   onDelete(id: number): void;
+  onEdit(user: User): void;
 }
 
 defineProps<UsersTableProps>();
 </script>
 
 <template>
-  <h3>Список всех пользователей</h3>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -18,8 +18,8 @@ defineProps<UsersTableProps>();
         <th scope="col" style="width: 22.7%">Фамилия</th>
         <th scope="col" style="width: 18.2%">Имя</th>
         <th scope="col" style="width: 18.2%">Логин</th>
-        <th scope="col" style="width: 12.1%">Роль</th>
-        <th scope="col" style="width: 22.7%">Действия</th>
+        <th scope="col" style="width: 14.1%">Роль</th>
+        <th scope="col" style="width: 20.7%">Действия</th>
       </tr>
     </thead>
     <tbody>
@@ -28,14 +28,18 @@ defineProps<UsersTableProps>();
         <td>{{ user.last_name }}</td>
         <td>{{ user.first_name }}</td>
         <td>&lt;login&gt;</td>
-        <td>{{ user.role }}</td>
+        <td>{{ translateUserRole(user.role) }}</td>
         <td>
+          <b-button size="sm" variant="outline-info" @click="onEdit(user)">
+            <b-icon-gear />
+          </b-button>
           <b-button
+            class="mx-3"
             size="sm"
             variant="outline-danger"
             @click="onDelete(user.id)"
           >
-            <b-icon-trash-fill /> Удалить
+            <b-icon-trash-fill />
           </b-button>
         </td>
       </tr>
