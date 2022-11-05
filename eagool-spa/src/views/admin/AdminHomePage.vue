@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { UserRole } from '../models/user';
-import AuthGuard from '../guards/auth.guard';
-import AdminNavbar from './admin/AdminNavbar.vue';
+import AdminNavbar from '../../components/admin/AdminNavbar.vue';
 
 const userFirstName = ref('');
 
 onMounted(async () => {
-  userFirstName.value = (await AuthGuard(UserRole.admin)).first_name;
+  userFirstName.value = 'ADMIN'; // (await AuthGuard(UserRole.admin)).first_name;
 });
 </script>
 

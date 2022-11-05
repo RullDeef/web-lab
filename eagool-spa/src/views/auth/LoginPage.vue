@@ -1,30 +1,42 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue';
+import NavBar from '../../components/utils/NavBar.vue';
+</script>
+
+<script lang="ts">
+import { ref } from 'vue';
+import injector from 'vue-inject';
 import router from '../../router';
 import { AuthService } from '../../services/auth.service';
-import Navbar from '../utils/NavBar.vue';
 
-const authService = inject('auth-service') as AuthService;
+export default {
+  data() {
+    return {
+      login: ref(''),
+      password: ref(''),
+      authError: ref(false),
+    };
+  },
 
-const login = ref('');
-const password = ref('');
-const authError = ref(false);
-
-async function doAuth() {
-  try {
-    await authService.auth(login.value, password.value);
-    login.value = '';
-    password.value = '';
-    router.back();
-  } catch (e) {
-    console.log(`catched exception: ${JSON.stringify(e)}`);
-    authError.value = true;
-  }
-}
+  methods: {
+    async doAuth() {
+      try {
+        console.log('trying to login...');
+        const authService = injector.get('authService') as AuthService;
+        await authService.auth(this.login, this.password);
+        this.login = '';
+        this.password = '';
+        router.back();
+      } catch (e) {
+        console.log(`caught exception: ${JSON.stringify(e)}`);
+        this.authError = true;
+      }
+    },
+  },
+};
 </script>
 
 <template>
-  <Navbar :routes="[]" />
+  <NavBar :routes="[]" />
   <div id="page-container" class="d-flex">
     <div class="container col-3 my-auto">
       <h4>Авторизуйтесь, чтобы продолжить</h4>

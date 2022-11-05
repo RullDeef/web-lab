@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { StudyGroup } from '../../models/study-group';
-import NavBar from '../utils/NavBar.vue';
+import NavBar from '../../views/NavBar.vue';
 
 export interface TutorNavBarProps {
   currentGroup: StudyGroup | null;

@@ -1,64 +1,75 @@
-<script setup lang="ts">
+<script lang="ts">
+import injector from 'vue-inject';
 import { Modal } from 'bootstrap';
-import { inject, onMounted, ref } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
+import { PropType } from 'vue';
 import { User } from '../../../models/user';
 import { EditUserDto } from '../../../dto/edit.user.dto';
 import { UsersService } from '../../../services/users.service';
 
-export interface UserEditFormData {
-  user: User;
-}
+export default {
+  props: {
+    user: {
+      type: Object as PropType<User>,
+    },
+  },
 
-const props = defineProps<UserEditFormData>();
+  data() {
+    return {
+      modal: {} as Modal,
+      modalShown: false,
+      userData: { ...this.user, password: '' } as EditUserDto,
+      passwordConfirm: '',
+    };
+  },
 
-const modal = ref<Modal>({} as Modal);
-const modalShown = ref<boolean>(false);
-const userData = ref<EditUserDto>({
-  ...props.user,
-  password: '',
-} as EditUserDto);
-const passwordConfirm = ref<string>('');
+  computed: {
+    usersService(): UsersService {
+      return injector.get('usersService');
+    },
+  },
 
-const userService = inject('users-service') as UsersService;
+  mounted() {
+    const modalRoot = document.querySelector(
+      '#user-edit-from-modal-content',
+    )?.parentElement;
+    if (modalRoot === undefined || modalRoot === null) {
+      console.error('modal root is not defined');
+      return;
+    }
 
-async function confirmEdit() {
-  console.log('sending new user data...');
+    this.modal = new Modal(modalRoot as HTMLElement);
 
-  await userService.editUser(props.user.id, userData.value);
-  modal.value.hide();
-}
+    modalRoot.addEventListener('show.bs.modal', () => {
+      this.modalShown = true;
+    });
 
-onMounted(() => {
-  const modalRoot = document.querySelector('#modal-content')?.parentElement;
-  if (modalRoot === undefined || modalRoot === null) {
-    console.error('modal root is not defined');
-    return;
-  }
+    modalRoot.addEventListener('hide.bs.modal', () => {
+      this.modalShown = false;
+    });
+  },
 
-  modal.value = new Modal(modalRoot as HTMLElement);
+  beforeRouteLeave(to, from, next) {
+    if (this.modalShown) {
+      next(false);
+      this.modal.hide();
+    } else {
+      next();
+    }
+  },
 
-  modalRoot.addEventListener('show.bs.modal', () => {
-    modalShown.value = true;
-  });
+  methods: {
+    async confirmEdit() {
+      console.log('sending new user data...');
 
-  modalRoot.addEventListener('hide.bs.modal', () => {
-    modalShown.value = false;
-  });
-});
-
-onBeforeRouteLeave((to, from, next) => {
-  if (modalShown.value) {
-    next(false);
-    modal.value.hide();
-  } else {
-    next();
-  }
-});
+      await this.usersService.editUser(this.user!.id, this.userData);
+      this.modal.hide();
+    },
+  },
+};
 </script>
 
 <template>
-  <div id="modal-content" class="modal-dialog">
+  <div id="user-edit-from-modal-content" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Форма редактирования пользователя</h5>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import StudentNavbar from './student/StudentNavbar.vue';
+import StudentNavbar from '../components/student/StudentNavbar.vue';
 </script>
 
 <template>

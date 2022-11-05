@@ -5,8 +5,8 @@ import NavBar from '../utils/NavBar.vue';
 <template>
   <NavBar
     :routes="[
-      { name: 'Пользователи', path: '/admin-panel/users' },
-      { name: 'Учебные группы', path: '/admin-panel/study-groups' },
+      { name: 'Пользователи', path: '/admin-home/users' },
+      { name: 'Учебные группы', path: '/admin-home/study-groups' },
     ]"
     :auth="{ name: 'Выйти', path: '/logout' }"
   />

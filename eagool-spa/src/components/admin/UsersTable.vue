@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { User, translateUserRole } from '../../../models/user';
+import { User, translateUserRole } from '../../models/user';
 
 export interface UsersTableProps {
   users: User[];

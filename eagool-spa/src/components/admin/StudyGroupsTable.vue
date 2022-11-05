@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StudyGroup } from '../../../models/study-group';
+import { StudyGroup } from '../../models/study-group';
 
 export interface StudyGroupsTableProps {
   groups: StudyGroup[];

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NavBar from '../utils/NavBar.vue';
+import NavBar from '../../views/NavBar.vue';
 
 export interface StudentNavBarProps {
   groupName: string;

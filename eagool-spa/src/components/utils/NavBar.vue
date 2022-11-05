@@ -1,15 +1,20 @@
-<script setup lang="ts">
+<script lang="ts">
+import { PropType } from 'vue';
+
 export interface NavbarRoute {
   name: string;
   path: string;
 }
 
-export interface NavbarProps {
-  routes: NavbarRoute[];
-  auth?: NavbarRoute;
-}
-
-defineProps<NavbarProps>();
+export default {
+  props: {
+    routes: Object as PropType<NavbarRoute[]>,
+    auth: {
+      type: Object as PropType<NavbarRoute>,
+      required: false,
+    },
+  },
+};
 </script>
 
 <template>

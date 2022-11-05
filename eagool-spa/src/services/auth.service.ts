@@ -18,6 +18,7 @@ export class AuthService {
     this.axios.defaults.headers.common.Authorization = `Bearer ${this.access_token}`;
 
     this.user = result.data.user;
+    alert('authorized!' + this.access_token);
   }
 
   logout() {

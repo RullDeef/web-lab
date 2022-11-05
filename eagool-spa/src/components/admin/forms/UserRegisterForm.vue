@@ -1,6 +1,5 @@
-<script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
+<script lang="ts">
+import injector from 'vue-inject';
 import { Modal } from 'bootstrap';
 import { UserRole } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
@@ -25,51 +24,63 @@ function emptyUserData(): UserFormData {
   };
 }
 
-const modal = ref<Modal>({} as Modal);
-const modalShown = ref<boolean>(false);
-const userData = ref<UserFormData>(emptyUserData());
+export default {
+  data() {
+    return {
+      modal: {} as Modal,
+      modalShown: false,
+      userData: emptyUserData(),
+    };
+  },
 
-const usersService = inject('users-service') as UsersService;
+  computed: {
+    usersService(): UsersService {
+      return injector.get('usersService');
+    },
+  },
 
-async function registerUser() {
-  console.log('registering new user...');
+  mounted() {
+    const modalRoot = document.querySelector('#modal-content')?.parentElement;
+    if (modalRoot === undefined || modalRoot === null) {
+      console.error('modal root is not defined');
+      return;
+    }
 
-  const { passwordConfirm, ...dto } = userData.value;
+    this.modal = new Modal(modalRoot as HTMLElement);
 
-  if (passwordConfirm !== dto.password) {
-    alert('Пароли не совпадают!');
-  } else {
-    await usersService.registerUser(dto);
-    modal.value.hide();
-  }
-}
+    modalRoot.addEventListener('show.bs.modal', () => {
+      this.modalShown = true;
+    });
 
-onMounted(() => {
-  const modalRoot = document.querySelector('#modal-content')?.parentElement;
-  if (modalRoot === undefined || modalRoot === null) {
-    console.error('modal root is not defined');
-    return;
-  }
+    modalRoot.addEventListener('hide.bs.modal', () => {
+      this.modalShown = false;
+    });
+  },
 
-  modal.value = new Modal(modalRoot as HTMLElement);
+  beforeRouteLeave(to, from, next) {
+    if (this.modalShown) {
+      next(false);
+      this.modal.hide();
+    } else {
+      next();
+    }
+  },
 
-  modalRoot.addEventListener('show.bs.modal', () => {
-    modalShown.value = true;
-  });
+  methods: {
+    async registerUser() {
+      console.log('registering new user...');
 
-  modalRoot.addEventListener('hide.bs.modal', () => {
-    modalShown.value = false;
-  });
-});
+      const { passwordConfirm, ...dto } = this.userData;
 
-onBeforeRouteLeave((to, from, next) => {
-  if (modalShown.value) {
-    next(false);
-    modal.value.hide();
-  } else {
-    next();
-  }
-});
+      if (passwordConfirm !== dto.password) {
+        alert('Пароли не совпадают!');
+      } else {
+        await this.usersService.registerUser(dto);
+        this.modal.hide();
+      }
+    },
+  },
+};
 </script>
 
 <template>
