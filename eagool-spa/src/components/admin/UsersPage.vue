@@ -5,18 +5,26 @@ import { UsersService } from '../../services/users.service';
 import AdminNavbar from './AdminNavbar.vue';
 import UsersTable from './views/UsersTable.vue';
 import UserRegisterForm from './forms/UserRegisterForm.vue';
+import UserEditForm from './forms/UserEditForm.vue';
 import AuthGuard from '../../guards/auth.guard';
 import Pager from '../utils/Pager.vue';
+import { Modal } from 'bootstrap';
 
 const currentPage = ref(0);
 const users = ref<User[]>([]);
 
+const selectedUser = ref<User>({} as User);
+
 const usersService = inject('users-service') as UsersService;
 
 async function editUser(user: User) {
-  /// TODO: implement
-  console.log('editing user:');
-  console.log(user);
+  selectedUser.value = user;
+
+  const modalRoot = document.querySelector('#edit-user')?.parentElement;
+  if (modalRoot !== undefined && modalRoot !== null) {
+    const modal = new Modal(modalRoot);
+    modal.show();
+  }
 }
 
 async function deleteUser(id: number) {
@@ -71,6 +79,10 @@ onMounted(async () => {
 
     <div class="modal" id="register-user">
       <UserRegisterForm />
+    </div>
+
+    <div class="modal" id="edit-user">
+      <UserEditForm :user="selectedUser" />
     </div>
   </b-container>
 </template>

@@ -1,47 +1,32 @@
 <script setup lang="ts">
+import { Modal } from 'bootstrap';
 import { inject, onMounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
-import { Modal } from 'bootstrap';
-import { UserRole } from '../../../models/user';
+import { User } from '../../../models/user';
+import { EditUserDto } from '../../../dto/edit.user.dto';
 import { UsersService } from '../../../services/users.service';
 
-export interface UserFormData {
-  first_name: string;
-  last_name: string;
-  role: UserRole;
-  login: string;
-  password: string;
-  passwordConfirm: string;
+export interface UserEditFormData {
+  user: User;
 }
 
-function emptyUserData(): UserFormData {
-  return {
-    first_name: '',
-    last_name: '',
-    role: UserRole.admin,
-    login: '',
-    password: '',
-    passwordConfirm: '',
-  };
-}
+const props = defineProps<UserEditFormData>();
 
 const modal = ref<Modal>({} as Modal);
 const modalShown = ref<boolean>(false);
-const userData = ref<UserFormData>(emptyUserData());
+const userData = ref<EditUserDto>({
+  ...props.user,
+  password: '',
+} as EditUserDto);
+const passwordConfirm = ref<string>('');
 
-const usersService = inject('users-service') as UsersService;
+const userService = inject('users-service') as UsersService;
 
-async function registerUser() {
-  console.log('registering new user...');
+async function confirmEdit() {
+  console.log('sending new user data...');
 
-  const { passwordConfirm, ...dto } = userData.value;
-
-  if (passwordConfirm !== dto.password) {
-    alert('Пароли не совпадают!');
-  } else {
-    await usersService.registerUser(dto);
-    modal.value.hide();
-  }
+  await userService.editUser(props.user.id, userData.value);
+  modal.value.hide();
 }
 
 onMounted(() => {
@@ -76,7 +61,7 @@ onBeforeRouteLeave((to, from, next) => {
   <div id="modal-content" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Форма регистрации</h5>
+        <h5 class="modal-title">Форма редактирования пользователя</h5>
         <button
           type="button"
           class="btn-close"
@@ -130,7 +115,7 @@ onBeforeRouteLeave((to, from, next) => {
             />
           </div>
           <div class="form-group mb-3">
-            <label for="password">Пароль</label>
+            <label for="password">Установить новый пароль</label>
             <input
               id="password"
               class="form-control"
@@ -146,7 +131,7 @@ onBeforeRouteLeave((to, from, next) => {
               class="form-control"
               type="password"
               name="password-confirm"
-              v-model="userData.passwordConfirm"
+              v-model="passwordConfirm"
             />
           </div>
         </div>
@@ -155,7 +140,7 @@ onBeforeRouteLeave((to, from, next) => {
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Отменить
         </button>
-        <button type="button" class="btn btn-primary" @click="registerUser">
+        <button type="button" class="btn btn-primary" @click="confirmEdit">
           Добавить
         </button>
       </div>

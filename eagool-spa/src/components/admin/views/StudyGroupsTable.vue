@@ -14,11 +14,13 @@ defineProps<StudyGroupsTableProps>();
 <template>
   <table class="table table-striped">
     <thead>
-      <th scope="col">ID</th>
-      <th scope="col">Название</th>
-      <th scope="col">Преподаватель</th>
-      <th scope="col">Кол-во студентов</th>
-      <th scope="col">Действия</th>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Название</th>
+        <th scope="col">Преподаватель</th>
+        <th scope="col">Кол-во студентов</th>
+        <th scope="col">Действия</th>
+      </tr>
     </thead>
     <tbody>
       <tr v-for="group in groups" :key="group.id">

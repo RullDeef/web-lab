@@ -1,3 +1,4 @@
+import { EditUserDto } from './../dto/edit.user.dto';
 import { RegisterUserDto } from './../dto/register.user.dto';
 import { Axios } from 'axios';
 import { User } from '../models/user';
@@ -28,6 +29,11 @@ export class UsersService {
 
   async deleteUser(id: number) {
     const result = await this.axios.delete(`/users/${id}`);
+    console.log(result);
+  }
+
+  async editUser(id: number, dto: EditUserDto) {
+    const result = await this.axios.put(`/users/${id}`, dto);
     console.log(result);
   }
 }
