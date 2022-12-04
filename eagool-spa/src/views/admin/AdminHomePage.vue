@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import AdminNavbar from '../../components/admin/AdminNavbar.vue';
+import AdminNavbar from '@/components/admin/AdminNavbar.vue';
+</script>
 
-const userFirstName = ref('');
+<script lang="ts">
+import injector from 'vue-inject';
+import { User } from '../../models/user';
+import { AuthService } from '../../services/auth.service';
 
-onMounted(async () => {
-  userFirstName.value = 'ADMIN'; // (await AuthGuard(UserRole.admin)).first_name;
-});
+export default {
+  computed: {
+    user(): User {
+      const authService = injector.get('authService') as AuthService;
+      return authService.getUser();
+    },
+  },
+};
 </script>
 
 <template>
@@ -14,6 +22,6 @@ onMounted(async () => {
 
   <b-container class="mt-3">
     <h3>Панель администратора</h3>
-    <p>Здравствуйте, {{ userFirstName }}!</p>
+    <p>Здравствуйте, {{ user.first_name }}!</p>
   </b-container>
 </template>

@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import AdminNavbar from '@/components/admin/AdminNavbar.vue';
 import UsersTable from '@/components/admin/UsersTable.vue';
-import UserRegisterForm from '@/components/admin/forms/UserRegisterForm.vue';
 import UserEditForm from '@/components/admin/forms/UserEditForm.vue';
 import Pager from '@/components/utils/Pager.vue';
 </script>
 
 <script lang="ts">
+import { createVNode } from 'vue';
 import injector from 'vue-inject';
+import { useModal } from 'vue-modal-provider';
 import { User } from '../../models/user';
 import { UsersService } from '../../services/users.service';
-import { Modal } from 'bootstrap';
+import UserRegisterForm from '@/components/admin/forms/UserRegisterForm.vue';
 
 export default {
   data() {
@@ -18,6 +19,8 @@ export default {
       currentPage: 0,
       users: [] as User[],
       selectedUser: null as User | null,
+
+      registerUserModal: useModal(UserRegisterForm),
     };
   },
 
@@ -32,14 +35,20 @@ export default {
   },
 
   methods: {
+    async registerUser() {
+      await this.registerUserModal.show({
+        header: 'hewwo',
+      });
+    },
+
     async editUser(user: User) {
       this.selectedUser = user;
 
-      const modalRoot = document.querySelector('#edit-user')?.parentElement;
-      if (modalRoot !== undefined && modalRoot !== null) {
-        const modal = new Modal(modalRoot);
-        modal.show();
-      }
+      // const modalRoot = document.querySelector('#edit-user')?.parentElement;
+      // if (modalRoot !== undefined && modalRoot !== null) {
+      //   const modal = new Modal(modalRoot);
+      //   modal.show();
+      // }
     },
 
     async deleteUser(id: number) {
@@ -75,11 +84,7 @@ export default {
     <UsersTable :users="users" :on-edit="editUser" :on-delete="deleteUser" />
 
     <div class="d-flex flex-row justify-content-between align-items-baseline">
-      <b-button
-        variant="primary"
-        data-bs-target="#register-user"
-        data-bs-toggle="modal"
-      >
+      <b-button variant="primary" @click="registerUser">
         Добавить пользователя
       </b-button>
 
@@ -89,10 +94,6 @@ export default {
         @next-page="toNextPage"
       />
     </div>
-
-    <!-- <div class="modal" id="register-user">
-      <UserRegisterForm />
-    </div> -->
 
     <div class="modal" id="edit-user">
       <UserEditForm :user="selectedUser" />

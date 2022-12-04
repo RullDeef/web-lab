@@ -17,6 +17,7 @@
     "bootstrap-vue-3": "^0.3.12",
     "vue": "^3.2.37",
     "vue-inject": "^2.1.1",
+    "vue-modal-provider": "^0.1.1",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {

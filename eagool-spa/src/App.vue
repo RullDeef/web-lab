@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { ModalProvider } from 'vue-modal-provider';
+</script>
+
 <template>
-  <router-view :key="$route.fullPath"></router-view>
+  <modal-provider>
+    <router-view :key="$route.fullPath" />
+  </modal-provider>
 </template>
