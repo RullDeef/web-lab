@@ -1,0 +1,25 @@
+<div class="page">
+  <app-header></app-header>
+
+  <div class="form-container">
+    <h3>Войдите, чтобы продолжить</h3>
+    <form (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label for="username">Имя пользователя</label>
+        <input type="text" name="username" id="username" [(ngModel)]="username">
+      </div>
+      <div class="input-group">
+        <label for="password">Пароль</label>
+        <input type="password" name="password" id="password" [(ngModel)]="password">
+      </div>
+      <div *ngIf="isInvalid" class="error-msg">
+        неверные данные для входа
+      </div>
+      <div class="submit-btn-container">
+        <input type="submit" value="войти">
+      </div>
+    </form>
+  </div>
+
+  <app-footer></app-footer>
+</div>

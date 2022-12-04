@@ -1,0 +1,6 @@
+<div>
+  Список всех пользователей
+
+  <app-users-list [users]="users | paginate:itemsPerPage:currentPage"></app-users-list>
+  <app-pager (page)="onUsersPageChanged($event)"></app-pager>
+</div>

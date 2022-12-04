@@ -1,0 +1,13 @@
+<div>
+  <app-header></app-header>
+
+  <div *ngIf="!isLoggedIn">
+    <p>
+      Eagool - система контроля выполнения домашних заданий по английскому языку
+    </p>
+  </div>
+
+  <app-admin-home *ngIf="isAdmin"></app-admin-home>
+
+  <app-footer></app-footer>
+</div>

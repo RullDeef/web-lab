@@ -1,16 +1,12 @@
-import { createApp } from 'vue';
-import BootstrapVue3 from 'bootstrap-vue-3';
-import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import './style.css';
-import App from './App.vue';
-import router from './router';
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-const app = createApp(App);
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
 
-app.use(BootstrapVue3);
-app.use(BootstrapIconsPlugin);
-app.use(router);
+if (environment.production) {
+  enableProdMode();
+}
 
-app.mount('#app');
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));

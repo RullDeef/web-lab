@@ -1,0 +1,40 @@
+div.page {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.form-container {
+    display: inline-block;
+    align-self: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+.input-group {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+label {
+    margin-right: 20px;
+}
+
+.submit-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-msg {
+    color: brown;
+    margin: 10px;
+    font-weight: bold;
+}

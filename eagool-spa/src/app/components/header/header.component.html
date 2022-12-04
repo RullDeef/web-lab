@@ -1,0 +1,5 @@
+<header>
+  <a routerLink="/">Eagool</a>
+  <a *ngIf="!isLoggedIn" routerLink="/login">войти</a>
+  <a *ngIf="isLoggedIn" (click)="logout()">выйти</a>
+</header>

@@ -1,0 +1,7 @@
+<div>
+  <app-users-view [users]="users"></app-users-view>
+
+  <button>Добавить пользователя</button>
+
+  <app-user-register-form (user)="registerUser($event)"></app-user-register-form>
+</div>
