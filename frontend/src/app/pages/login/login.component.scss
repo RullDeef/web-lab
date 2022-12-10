@@ -1,0 +1,83 @@
+@import '../../app.component.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+
+    .alert {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
+        padding: 10px;
+        text-align: right;
+        color: $font-color;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        background-color: $background-color;
+        color: $font-color;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+        label {
+            width: 100%;
+            text-align: left;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            color: $danger-color;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: 500;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $accent-color;
+            }
+        }
+
+        span {
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    }
+}

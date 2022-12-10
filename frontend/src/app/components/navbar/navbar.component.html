@@ -1,0 +1,16 @@
+<div class="navbar">
+    <h1><a routerLink="/home">Eagool</a></h1>
+    <ul *ngFor="let link of links">
+        <li>
+            <a routerLink="link.path">{{link.label}}</a>
+        </li>
+    </ul>
+    <ul>
+        <li *ngIf="isLogged()">
+            <a routerLink="/home" (click)="logout()">Logout</a>
+        </li>
+        <li *ngIf="!isLogged()">
+            <a routerLink="/login">Login</a>
+        </li>
+    </ul>
+</div>

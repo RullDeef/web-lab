@@ -1,0 +1,50 @@
+@import '../../app.component.scss';
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $navbar-color;
+    color: $font-color;
+
+    h1 {
+        margin: 5px;
+        padding: 0;
+
+        a {
+            text-decoration: none;
+            color: $font-color;
+
+            &:hover {
+                color: $accent-color;
+            }
+        }
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: $navbar-color;
+
+        li {
+            float: right;
+
+            a {
+                display: block;
+                color: $font-color;
+                text-align: center;
+                padding: 22px 16px;
+                text-decoration: none;
+                font-size: $font-size;
+
+                &:hover {
+                    background-color: $navbar-color;
+                    color: $accent-color;
+                }
+            }
+        }
+    }
+}
