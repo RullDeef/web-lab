@@ -12,10 +12,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
-import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
-import { AdminGroupsComponent } from './pages/admin-groups/admin-groups.component';
-import { AdminTextsComponent } from './pages/admin-texts/admin-texts.component';
+import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
+import { AdminUsersComponent } from './pages/admin/admin-users/admin-users.component';
+import { AdminGroupsComponent } from './pages/admin/admin-groups/admin-groups.component';
+import { AdminTextsComponent } from './pages/admin/admin-texts/admin-texts.component';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { AdminTextsComponent } from './pages/admin-texts/admin-texts.component';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

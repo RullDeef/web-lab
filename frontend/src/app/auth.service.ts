@@ -8,8 +8,6 @@ import { User } from './models/user';
 })
 export class AuthService {
 
-  private activeUser?: User;
-
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -30,18 +28,17 @@ export class AuthService {
   }
 
   public logout(): void {
-    // TODO: Implement logout
     localStorage.removeItem('jwt');
-    this.activeUser = undefined;
+    localStorage.removeItem('activeUser');
   }
 
   public getRole(): string {
-    return this.activeUser?.role || '';
+    return localStorage.getItem('activeUser') || '';
   }
 
   private setSession(authResult: AuthResult): void {
     localStorage.setItem('jwt', authResult.access_token);
-    this.activeUser = authResult.user;
+    localStorage.setItem('activeUser', authResult.user.role);
   }
 
   private log(message: string) {
