@@ -21,6 +21,7 @@ import { TeacherGroupsComponent } from './pages/teacher/teacher-groups/teacher-g
 import { TeacherTextsComponent } from './pages/teacher/teacher-texts/teacher-texts.component';
 import { StudentHomeComponent } from './pages/student/student-home/student-home.component';
 import { StudentTextsComponent } from './pages/student/student-texts/student-texts.component';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,9 @@ import { StudentTextsComponent } from './pages/student/student-texts/student-tex
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.DEBUG,
+    })
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
