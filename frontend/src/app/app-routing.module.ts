@@ -11,8 +11,8 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { TeacherGroupsComponent } from './pages/teacher/teacher-groups/teacher-groups.component';
 import { TeacherHomeComponent } from './pages/teacher/teacher-home/teacher-home.component';
 import { TeacherTextsComponent } from './pages/teacher/teacher-texts/teacher-texts.component';
-import { UserHomeComponent } from './pages/user/user-home/user-home.component';
-import { UserTextsComponent } from './pages/user/user-texts/user-texts.component';
+import { StudentHomeComponent } from './pages/student/student-home/student-home.component';
+import { StudentTextsComponent } from './pages/student/student-texts/student-texts.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -39,12 +39,12 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'user-home',
-    component: UserHomeComponent,
+    path: 'student-home',
+    component: StudentHomeComponent,
     canActivate: [AuthGuard],
     data: { role: 'student' },
     children: [
-      { path: 'texts', component: UserTextsComponent },
+      { path: 'texts', component: StudentTextsComponent },
     ]
   },
   { path: 'login', component: LoginComponent },

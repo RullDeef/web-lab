@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,8 +19,8 @@ import { AuthGuard } from './auth.guard';
 import { TeacherHomeComponent } from './pages/teacher/teacher-home/teacher-home.component';
 import { TeacherGroupsComponent } from './pages/teacher/teacher-groups/teacher-groups.component';
 import { TeacherTextsComponent } from './pages/teacher/teacher-texts/teacher-texts.component';
-import { UserHomeComponent } from './pages/user/user-home/user-home.component';
-import { UserTextsComponent } from './pages/user/user-texts/user-texts.component';
+import { StudentHomeComponent } from './pages/student/student-home/student-home.component';
+import { StudentTextsComponent } from './pages/student/student-texts/student-texts.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +37,8 @@ import { UserTextsComponent } from './pages/user/user-texts/user-texts.component
     TeacherHomeComponent,
     TeacherGroupsComponent,
     TeacherTextsComponent,
-    UserHomeComponent,
-    UserTextsComponent,
+    StudentHomeComponent,
+    StudentTextsComponent,
   ],
   imports: [
     BrowserModule,
