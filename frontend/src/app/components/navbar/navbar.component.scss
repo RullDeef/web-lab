@@ -4,16 +4,11 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     background-color: $navbar-color;
     color: $font-color;
 
     .logo {
         padding: 0 20px;
-    }
-
-    .links {
-        display: flex;
     }
 
     h1 {
@@ -30,31 +25,103 @@
         }
     }
 
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: $navbar-color;
-
-        li:first-child {
-            margin-right: auto;
+    @media (min-width: 768px) {
+        .collapse {
+            label {
+                display: none;
+            }
+            input {
+                display: none;
+            }
         }
 
-        li {
-            float: right;
+        .links {
+            display: flex;
+        }
 
-            a {
+        ul {
+            list-style-type: none;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: $navbar-color;
+
+            li {
+                a {
+                    display: block;
+                    color: $font-color;
+                    text-align: center;
+                    padding: 10px 16px;
+                    text-decoration: none;
+                    font-size: $font-size;
+
+                    &:hover {
+                        color: $accent-color;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .collapse {
+            padding: 0px 15px;
+            border-bottom: 1px solid $bold-color;
+            box-shadow: 1px 2px 3px;
+
+            label {
+                font-size: 2em;
                 display: block;
-                color: $font-color;
-                text-align: center;
-                padding: 22px 16px;
-                text-decoration: none;
-                font-size: $font-size;
+                align-items: center;
+                cursor: pointer;
+            }
 
-                &:hover {
-                    background-color: $bold-color;
-                    color: $accent-color;
+            input {
+                display: none;
+            }
+
+            input:checked {
+                display: none;
+            }
+
+            .menu-content {
+                max-height: 0;
+                overflow: hidden;
+            }
+
+            input:checked~.menu-content {
+                max-height: 100%;
+            }
+
+            ul {
+                list-style-type: none;
+                display: block;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: $navbar-color;
+
+                li:first-child {
+                    margin-right: auto;
+                }
+
+                li {
+                    float: right;
+
+                    a {
+                        display: block;
+                        color: $font-color;
+                        text-align: center;
+                        padding: 10px 0;
+                        text-decoration: none;
+                        font-size: $font-size;
+
+                        &:hover {
+                            color: $accent-color;
+                        }
+                    }
                 }
             }
         }

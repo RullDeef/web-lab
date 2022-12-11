@@ -3,19 +3,23 @@
         <h1><a routerLink="/home">Eagool</a></h1>
     </div>
 
-    <div class="links">
-        <ul *ngFor="let link of links">
-            <li>
-                <a routerLink="{{ link.path }}">{{ link.page }}</a>
-            </li>
-        </ul>
-        <ul>
-            <li *ngIf="isLogged()">
-                <a routerLink="/home" (click)="logout()">Logout</a>
-            </li>
-            <li *ngIf="!isLogged()">
-                <a routerLink="/login">Login</a>
-            </li>
-        </ul>
+    <div class="collapse">
+        <input type="checkbox" id="menu" />
+        <label for="menu">Меню</label>
+        <div class="menu-content links">
+            <ul *ngFor="let link of links">
+                <li>
+                    <a routerLink="{{ link.path }}">{{ link.page }}</a>
+                </li>
+            </ul>
+            <ul>
+                <li *ngIf="isLogged()">
+                    <a routerLink="/home" (click)="logout()">Logout</a>
+                </li>
+                <li *ngIf="!isLogged()">
+                    <a routerLink="/login">Login</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
