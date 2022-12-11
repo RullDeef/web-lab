@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -18,16 +19,30 @@ export class TypeORMUserRepository implements UserRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repo: Repository<UserEntity>,
-  ) {}
+  ) {
+    this.logger.log('construct');
+  }
 
   async save(user: User) {
+    this.logger.log(`save user=${JSON.stringify(user)}`);
+
+    if (user.login === '') {
+      this.logger.error('user login must not be empty');
+      throw new BadRequestException();
+    }
+
+    if (await this.existsByLogin(user.login)) {
+      this.logger.error(`user with given login (${user.login}) exists`);
+      throw new ConflictException();
+    }
+
     try {
       let entity = UserEntity.fromModel(user);
       entity = this.repo.create(entity);
       entity = await this.repo.save(entity);
       return entity.toModel();
     } catch (e) {
-      this.logger.log(`excecption: ${e}`);
+      this.logger.log(`caught exception: ${e}`);
       throw new ConflictException();
     }
   }

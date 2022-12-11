@@ -5,5 +5,5 @@ export class StudyGroup {
   title: string;
   tutor: User;
   students: User[];
-  created_at?: Date;
+  created_at: Date;
 }

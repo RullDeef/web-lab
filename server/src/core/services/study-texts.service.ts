@@ -10,11 +10,12 @@ export class StudyTextService {
   constructor(
     @Inject(StudyTextRepository)
     private repository: StudyTextRepository,
-  ) {}
+  ) {
+    this.logger.log('constructor');
+  }
 
   async create(text: StudyText) {
-    this.logger.log('create');
-    this.logger.log(JSON.stringify(text));
+    this.logger.log(`create text=${JSON.stringify(text)}`);
 
     return this.repository.save(text);
   }
