@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async validateUser(login: string, password: string) {
     this.logger.log(`validateUser login=${login} password=***`);
@@ -31,7 +31,7 @@ export class AuthService {
   async login(user: User) {
     this.logger.log('login', user);
 
-    const payload = { username: user.login, sub: user.id };
+    const { password, ...payload } = user;
     const access_token = this.jwtService.sign(payload);
 
     this.logger.log(`token generated: ${access_token}`);
