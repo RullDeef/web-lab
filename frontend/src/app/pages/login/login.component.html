@@ -4,14 +4,14 @@
     <h2>Авторизуйтесь, чтобы получить доступ к ресурсу.</h2>
 
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <label for="email">Электронная почта</label>
-        <input formControlName="email" required type="text" />
-        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
-            <div *ngIf="email?.errors?.['required']">
+        <label for="username">Логин</label>
+        <input formControlName="username" required type="text" />
+        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
+            <div *ngIf="username?.errors?.['required']">
                 Поле обязательно для заполнения
             </div>
-            <div *ngIf="email?.errors?.['email']">
-                Некорректный адрес электронной почты
+            <div *ngIf="username?.errors?.['minlength']">
+                Минимальная длина логина 4 символа
             </div>
         </div>
         <label for="password">Пароль</label>
@@ -22,11 +22,11 @@
             </div>
 
             <div *ngIf="password?.errors?.['minlength']">
-                Минимальная длина пароля 8 символов
+                Минимальная длина пароля 5 символов
             </div>
         </div>
 
-        <button [disabled]="email?.invalid || password?.invalid">
+        <button [disabled]="username?.invalid || password?.invalid">
             Войти
         </button>
         <span>Нет аккаунта? Обратитесь к преподавателю.</span>

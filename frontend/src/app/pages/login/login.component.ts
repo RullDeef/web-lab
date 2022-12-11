@@ -1,8 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 
 @Component({
@@ -18,18 +16,17 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)])
+      username: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(5)])
     });
   }
 
-  get email(): AbstractControl<any, any> | null {
-    return this.loginForm.get('email');
+  get username(): AbstractControl<any, any> | null {
+    return this.loginForm.get('username');
   }
 
   get password(): AbstractControl<any, any> | null {
@@ -37,14 +34,14 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.auth.login(this.loginForm.value.email, this.loginForm.value.password)
+    this.auth.login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
-        success => {
-          if (success) {
-            this.router.navigate(['/home']);
-          }
-          else {
-            alert('Login failed (implement this)');
+        res => {
+          console.log(res);
+          if (res.access_token !== undefined) {
+            this.router.navigate(['/']);
+          } else {
+            alert('Invalid credentials')
           }
         }
       );
