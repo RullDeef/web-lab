@@ -17,6 +17,11 @@ import { AdminUsersComponent } from './pages/admin/admin-users/admin-users.compo
 import { AdminGroupsComponent } from './pages/admin/admin-groups/admin-groups.component';
 import { AdminTextsComponent } from './pages/admin/admin-texts/admin-texts.component';
 import { AuthGuard } from './auth.guard';
+import { TeacherHomeComponent } from './pages/teacher/teacher-home/teacher-home.component';
+import { TeacherGroupsComponent } from './pages/teacher/teacher-groups/teacher-groups.component';
+import { TeacherTextsComponent } from './pages/teacher/teacher-texts/teacher-texts.component';
+import { UserHomeComponent } from './pages/user/user-home/user-home.component';
+import { UserTextsComponent } from './pages/user/user-texts/user-texts.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +35,11 @@ import { AuthGuard } from './auth.guard';
     AdminUsersComponent,
     AdminGroupsComponent,
     AdminTextsComponent,
+    TeacherHomeComponent,
+    TeacherGroupsComponent,
+    TeacherTextsComponent,
+    UserHomeComponent,
+    UserTextsComponent,
   ],
   imports: [
     BrowserModule,

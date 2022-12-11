@@ -8,6 +8,14 @@
     background-color: $navbar-color;
     color: $font-color;
 
+    .logo {
+        padding: 0 20px;
+    }
+
+    .links {
+        display: flex;
+    }
+
     h1 {
         margin: 5px;
         padding: 0;
@@ -29,6 +37,10 @@
         overflow: hidden;
         background-color: $navbar-color;
 
+        li:first-child {
+            margin-right: auto;
+        }
+
         li {
             float: right;
 
@@ -41,7 +53,7 @@
                 font-size: $font-size;
 
                 &:hover {
-                    background-color: $navbar-color;
+                    background-color: $bold-color;
                     color: $accent-color;
                 }
             }

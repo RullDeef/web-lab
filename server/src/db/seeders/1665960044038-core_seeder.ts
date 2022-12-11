@@ -20,6 +20,24 @@ export class coreSeeder1665960044038 implements MigrationInterface {
       role: UserRole.ADMIN,
     } as Partial<UserEntity>);
 
+    // create user account
+    await queryRunner.manager.save(UserEntity, {
+      first_name: 'user',
+      last_name: 'userovich',
+      login: 'user',
+      password: await hash('user123', 10),
+      role: UserRole.STUDENT,
+    } as Partial<UserEntity>);
+
+    // create teacher account
+    await queryRunner.manager.save(UserEntity, {
+      first_name: 'teacher',
+      last_name: 'teacherovich',
+      login: 'teacher',
+      password: await hash('teacher', 10),
+      role: UserRole.TUTOR,
+    } as Partial<UserEntity>);
+
     const tutors = new UserFactory().generate(10, {
       role: UserRole.TUTOR,
     });

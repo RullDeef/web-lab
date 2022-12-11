@@ -1,0 +1,49 @@
+@import '../../app.component.scss';
+
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    width: 100vw;
+
+    h1 {
+        font-size: 2em;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    #content {
+        padding: 20px 0;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 500;
+        max-width: 400px;
+        background-color: $background-color;
+        color: $font-color;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    #auth {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+        width: 100%;
+        max-width: 200px;
+        padding: 20px;
+        background-color: $accent-color;
+        color: $font-color;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    a {
+        color: rgb(44, 6, 6);
+        text-decoration: none;
+    }
+}

@@ -17,10 +17,22 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     if (this.role === 'admin') {
       this.links = [
-        {page: 'Home', path: '/admin-home'},
         {page: 'Users', path: '/admin-home/users'},
         {page: 'Groups', path: '/admin-home/groups'},
         {page: 'Texts', path: '/admin-home/texts'},
+      ];
+    }
+
+    if (this.role == 'student') {
+      this.links = [
+        {page: 'Texts', path: '/user-home/texts'},
+      ];
+    }
+
+    if (this.role == 'tutor') {
+      this.links = [
+        {page: 'Groups', path: '/teacher-home/groups'},
+        {page: 'Texts', path: '/teacher-home/texts'},
       ];
     }
   }
