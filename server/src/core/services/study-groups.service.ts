@@ -14,10 +14,12 @@ export class StudyGroupsService {
     private readonly userRepository: UserRepository,
     @Inject(StudyGroupRepository)
     private readonly studyGroupRepository: StudyGroupRepository,
-  ) {}
+  ) {
+    this.logger.log('constructor');
+  }
 
   async create(dto: CreateStudyGroupDto) {
-    this.logger.log('create', dto);
+    this.logger.log(`create dto=${JSON.stringify(dto)}`);
 
     try {
       const group = new StudyGroup();
@@ -30,7 +32,7 @@ export class StudyGroupsService {
 
       return await this.studyGroupRepository.save(group);
     } catch (e) {
-      this.logger.log(`exception catched: ${e}`);
+      this.logger.log(`caught exception: ${e}`);
 
       throw new NotFoundException();
     }

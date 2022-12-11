@@ -18,11 +18,13 @@ export class UsersService {
   constructor(
     @Inject(UserRepository)
     private readonly repository: UserRepository,
-  ) {}
+  ) {
+    this.logger.log('constructor');
+  }
 
   async create(user: User) {
+    this.logger.log(`create user=${JSON.stringify(user)}`);
     user.password = await this.encryptPassword(user.password);
-    this.logger.log('create', user);
 
     return this.repository.save(user);
   }
@@ -40,7 +42,7 @@ export class UsersService {
   }
 
   async edit(id: number, data: Partial<User>) {
-    this.logger.log(`edit id=${id}`);
+    this.logger.log(`edit id=${id} data=${JSON.stringify(data)}`);
 
     if (!(await this.repository.existsById(id))) {
       this.logger.log(`user with id=${id} not found`);
@@ -50,7 +52,6 @@ export class UsersService {
     if (data.password !== undefined) {
       data.password = await this.encryptPassword(data.password);
     }
-    this.logger.log('data:', data);
 
     if (
       data.login !== undefined &&
@@ -79,11 +80,13 @@ export class UsersService {
     return this.repository.findByLogin(login);
   }
 
-  private async encryptPassword(password: string): Promise<string> {
-    return hash(password, this.saltRounds);
+  async checkPassword(password: string, hashed: string): Promise<boolean> {
+    this.logger.log(`checkPassword hashed=${hashed}`);
+
+    return compare(password, hashed);
   }
 
-  async checkPassword(password: string, hashed: string): Promise<boolean> {
-    return compare(password, hashed);
+  private async encryptPassword(password: string): Promise<string> {
+    return hash(password, this.saltRounds);
   }
 }
