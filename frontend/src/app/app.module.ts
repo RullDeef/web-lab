@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
+import { MatTableModule } from '@angular/material/table';
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -23,6 +23,9 @@ import { StudentHomeComponent } from './pages/student/student-home/student-home.
 import { StudentTextsComponent } from './pages/student/student-texts/student-texts.component';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { UserItemComponent } from './components/admin/user-item/user-item.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableComponent } from './components/table/table/table.component';
+import { UserTableComponent } from './components/admin/user-table/user-table.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,8 @@ import { UserItemComponent } from './components/admin/user-item/user-item.compon
     StudentHomeComponent,
     StudentTextsComponent,
     UserItemComponent,
+    TableComponent,
+    UserTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,9 @@ import { UserItemComponent } from './components/admin/user-item/user-item.compon
     HttpClientModule,
     LoggerModule.forRoot({
       level: NgxLoggerLevel.DEBUG,
-    })
+    }),
+    MatTableModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
