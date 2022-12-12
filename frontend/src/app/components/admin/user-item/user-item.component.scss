@@ -1,0 +1,21 @@
+div, span {
+    border: 1px solid;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px;
+
+    .data {
+        span {
+
+        }
+    }
+
+    .controls {
+        
+    }
+}

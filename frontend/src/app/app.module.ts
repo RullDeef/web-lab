@@ -22,6 +22,7 @@ import { TeacherTextsComponent } from './pages/teacher/teacher-texts/teacher-tex
 import { StudentHomeComponent } from './pages/student/student-home/student-home.component';
 import { StudentTextsComponent } from './pages/student/student-texts/student-texts.component';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { UserItemComponent } from './components/admin/user-item/user-item.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
     TeacherTextsComponent,
     StudentHomeComponent,
     StudentTextsComponent,
+    UserItemComponent,
   ],
   imports: [
     BrowserModule,
