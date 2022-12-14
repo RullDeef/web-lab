@@ -27,6 +27,8 @@ import { UserItemComponent } from './components/admin/user-item/user-item.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableComponent } from './components/table/table/table.component';
 import { UserTableComponent } from './components/admin/user-table/user-table.component';
+import { TextsComponent } from './components/admin/texts/texts.component';
+import { GroupsComponent } from './components/admin/groups/groups.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { UserTableComponent } from './components/admin/user-table/user-table.com
     UserItemComponent,
     TableComponent,
     UserTableComponent,
+    TextsComponent,
+    GroupsComponent,
   ],
   imports: [
     BrowserModule,

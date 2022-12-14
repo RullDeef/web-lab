@@ -1,0 +1,10 @@
+<app-table
+    [tableColumns]="tableColumns"
+    [dataSource]="dataSource"
+></app-table>
+<mat-paginator
+    #paginator
+    pageSize=10
+    [pageSizeOptions]="[5, 10]"
+    showFirstLastButtons
+></mat-paginator>
