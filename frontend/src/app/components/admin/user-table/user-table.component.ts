@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Column } from 'src/app/models/column';
 import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-table',
@@ -16,15 +20,27 @@ export class UserTableComponent implements OnInit {
     // {columnDef: 'controls', header: 'Управление', cell: (element: Record<string, any>) => `${element['controls']}`},
   ];
 
-  data: Array<User> = [
-    new User(1, 'Klim', 'Kornienko'),
-    new User(2, 'Alexey', 'Klimenko'),
-  ]
+  dataSource = new MatTableDataSource<User>();
+  @ViewChild('paginator') paginator!: MatPaginator;
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private changeDetector: ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
-
+    this.refresh();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator.pageSize = 10;
+  }
+
+  refresh(): void {
+    this.userService.getUsers().subscribe((users: Array<User>) => {
+      this.dataSource = new MatTableDataSource<User>(users);
+      this.dataSource.paginator = this.paginator;
+    });
+  }
 }

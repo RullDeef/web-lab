@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -58,6 +59,7 @@ import { UserTableComponent } from './components/admin/user-table/user-table.com
       level: NgxLoggerLevel.DEBUG,
     }),
     MatTableModule,
+    MatPaginatorModule,
     BrowserAnimationsModule
   ],
   providers: [AuthGuard],
