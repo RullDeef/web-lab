@@ -32,6 +32,12 @@ export class StudyTextService {
     return this.repository.findById(id);
   }
 
+  async findByCreatorId(id: number) {
+    this.logger.log(`findByCreatorId id=${id}`);
+
+    return this.repository.findByCreatorId(id);
+  }
+
   async delete(id: number) {
     this.logger.log(`delete id=${id}`);
 

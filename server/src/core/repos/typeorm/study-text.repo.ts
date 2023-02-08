@@ -13,7 +13,7 @@ export class TypeORMStudyTextRepository implements StudyTextRepository {
   constructor(
     @InjectRepository(StudyTextEntity)
     private readonly repo: Repository<StudyTextEntity>,
-  ) {}
+  ) { }
 
   async save(text: StudyText): Promise<StudyText> {
     let entity = this.repo.create(StudyTextEntity.fromModel(text));
@@ -37,6 +37,16 @@ export class TypeORMStudyTextRepository implements StudyTextRepository {
     } catch (e) {
       this.logger.log(`exception: ${e}`);
       throw new NotFoundException();
+    }
+  }
+
+  async findByCreatorId(id: number): Promise<StudyText[]> {
+    try {
+      const texts = await this.repo.findBy({ creator: { id } });
+      return texts.map((t) => t.toModel());
+    } catch (e) {
+      this.logger.log(`exception: ${e}`);
+      throw e;
     }
   }
 

@@ -8,6 +8,7 @@ export interface StudyTextRepository {
 
   findAll(): Promise<StudyText[]>;
   findById(id: number): Promise<StudyText>;
+  findByCreatorId(id: number): Promise<StudyText[]>;
   findFiltered(opts: FilterOptions): Promise<StudyText[]>;
 
   delete(id: number): Promise<void>;
