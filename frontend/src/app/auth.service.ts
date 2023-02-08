@@ -56,7 +56,7 @@ export class AuthService {
     const jwt = localStorage.getItem('jwt');
 
     if (jwt === null) {
-      this.logger.error("failed to get saved jwt token from local storage");
+      this.logger.warn("failed to get saved jwt token from local storage");
       return null;
     }
 

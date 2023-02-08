@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
+import { UserRole } from 'src/app/models/user';
 
 @Component({
   selector: 'app-navbar',
@@ -8,32 +8,35 @@ import { AuthService } from 'src/app/auth.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-
-  @Input() role!: string;
-  links: Array<{page: string, path: string}> = [];  
+  @Input() role?: UserRole;
+  links: Array<{ page: string, path: string }> = [];
 
   constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
-    if (this.role === 'admin') {
+    if (this.role === undefined)
+      return;
+
+    if (this.role == UserRole.ADMIN) {
       this.links = [
-        {page: 'Users', path: '/admin-home/users'},
-        {page: 'Groups', path: '/admin-home/groups'},
-        {page: 'Texts', path: '/admin-home/texts'},
+        { page: 'Users', path: '/admin-home/users' },
+        { page: 'Groups', path: '/admin-home/groups' },
+        { page: 'Texts', path: '/admin-home/texts' },
       ];
     }
-
-    if (this.role == 'student') {
+    else if (this.role == UserRole.STUDENT) {
       this.links = [
-        {page: 'Texts', path: '/user-home/texts'},
+        { page: 'Texts', path: '/student-home/texts' },
       ];
     }
-
-    if (this.role == 'tutor') {
+    else if (this.role == UserRole.TUTOR) {
       this.links = [
-        {page: 'Groups', path: '/teacher-home/groups'},
-        {page: 'Texts', path: '/teacher-home/texts'},
+        { page: 'Groups', path: '/teacher-home/groups' },
+        { page: 'Texts', path: '/teacher-home/texts' },
       ];
+    }
+    else {
+      throw Error(`invalid role value: ${this.role}`);
     }
   }
 

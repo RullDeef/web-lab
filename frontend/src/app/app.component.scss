@@ -1,7 +1,16 @@
 $background-color: #fca7a7;
-$accent-color: rgb(235, 206, 126);
-$navbar-color: rgb(226, 102, 102);
-$bold-color: rgb(216, 38, 38);
+$accent-color: rgb(52, 37, 76);
+$navbar-color: rgb(245, 148, 54);
+$bold-color: rgb(83, 97, 84);
 $danger-color: rgb(255, 0, 0);
-$font-color: #fff;
+$font-color: rgb(238, 226, 183);
 $font-size: 1.5em;
+
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Noto+Serif:ital@0;1&display=swap');
+
+$font-family-primary: 'Noto Serif', serif;
+$font-family-accent: 'Cookie', cursive;
+
+* {
+    font-family: $font-family-primary;
+}

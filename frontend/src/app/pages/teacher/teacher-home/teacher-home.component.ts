@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserRole } from 'src/app/models/user';
 
 @Component({
   selector: 'app-teacher-home',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./teacher-home.component.scss']
 })
 export class TeacherHomeComponent {
-
+  UserRole = UserRole;
 }

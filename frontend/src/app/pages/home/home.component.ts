@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
+import { UserRole } from 'src/app/models/user';
 
 @Component({
   selector: 'app-home',
@@ -9,21 +10,28 @@ import { AuthService } from 'src/app/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  role!: string;
-
   constructor(
     private auth: AuthService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-      this.role = this.auth.getRole();
-      if (this.role === 'admin') {
-        this.router.navigate(['/admin-home']);
-      } else if (this.role === 'student') {
-        this.router.navigate(['/user-home']);
-      } else if (this.role === 'tutor') {
-        this.router.navigate(['/teacher-home']);
-      }
+    const role = this.auth.getRole();
+    if (role == '') {
+      return;
+    }
+
+    if (role == UserRole.ADMIN) {
+      this.router.navigate(['/admin-home']);
+    }
+    else if (role == UserRole.STUDENT) {
+      this.router.navigate(['/student-home']);
+    }
+    else if (role == UserRole.TUTOR) {
+      this.router.navigate(['/teacher-home']);
+    }
+    else {
+      throw Error(`invalid role value: ${role}`);
+    }
   }
 }

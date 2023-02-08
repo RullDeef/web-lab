@@ -13,6 +13,7 @@ import { TeacherHomeComponent } from './pages/teacher/teacher-home/teacher-home.
 import { TeacherTextsComponent } from './pages/teacher/teacher-texts/teacher-texts.component';
 import { StudentHomeComponent } from './pages/student/student-home/student-home.component';
 import { StudentTextsComponent } from './pages/student/student-texts/student-texts.component';
+import { UserRole } from './models/user';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,7 +22,7 @@ const routes: Routes = [
     path: 'admin-home',
     component: AdminHomeComponent,
     canActivate: [AuthGuard],
-    data: { role: 'admin' },
+    data: { role: UserRole.ADMIN },
     children: [
       { path: 'users', component: AdminUsersComponent },
       { path: 'groups', component: AdminGroupsComponent },
@@ -32,7 +33,7 @@ const routes: Routes = [
     path: 'teacher-home',
     component: TeacherHomeComponent,
     canActivate: [AuthGuard],
-    data: { role: 'tutor' },
+    data: { role: UserRole.TUTOR },
     children: [
       { path: 'groups', component: TeacherGroupsComponent },
       { path: 'texts', component: TeacherTextsComponent },
@@ -42,7 +43,7 @@ const routes: Routes = [
     path: 'student-home',
     component: StudentHomeComponent,
     canActivate: [AuthGuard],
-    data: { role: 'student' },
+    data: { role: UserRole.STUDENT },
     children: [
       { path: 'texts', component: StudentTextsComponent },
     ]

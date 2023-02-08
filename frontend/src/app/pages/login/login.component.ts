@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       username: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(5)])
+      password: new FormControl('', [Validators.required])
     });
   }
 
@@ -37,11 +37,10 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(
         res => {
-          console.log(res);
-          if (res.access_token !== undefined) {
+          if (res !== undefined && res.access_token !== undefined) {
             this.router.navigate(['/']);
           } else {
-            alert('Invalid credentials')
+            alert('Invalid credentials');
           }
         }
       );

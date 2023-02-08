@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { UserRole } from './models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private auth: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -19,7 +20,7 @@ export class AuthGuard implements CanActivate {
     return this.checkUserLogin(next, state.url);
   }
 
-  checkUserLogin(route: ActivatedRouteSnapshot, url: any) : boolean {
+  checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
     if (this.auth.isLogged()) {
       const userRole = this.auth.getRole();
       if (route.data['role'] && route.data['role'] === userRole) {
@@ -29,20 +30,20 @@ export class AuthGuard implements CanActivate {
       if (!route.data['role']) {
         return true;
       }
-
-      if (userRole === 'admin') {
+      else if (userRole == UserRole.ADMIN) {
         this.router.navigate(['/admin']);
         return false;
       }
-
-      if (userRole === 'user') {
-        this.router.navigate(['/user']);
+      else if (userRole == UserRole.STUDENT) {
+        this.router.navigate(['/student']);
         return false;
       }
-
-      if (userRole === 'teacher') {
+      else if (userRole === UserRole.TUTOR) {
         this.router.navigate(['/teacher']);
         return false;
+      }
+      else {
+        throw Error(`invalid value for userRole: ${userRole}`);
       }
     }
 
